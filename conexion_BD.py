@@ -7,51 +7,48 @@ try:
     cursor.executescript("""
         BEGIN;
         CREATE TABLE Especialista(
+            rut TEXT PRIMARY KEY,
             nombre TEXT NOT NULL,
-            especialidad TEXT NO NULL,
-            rut TEXT NOT NULL,
+            especialidad TEXT NOT NULL,
             telefono INTEGER,
-            correo TEXT NOT NULL);
-
+            correo TEXT
+        );
+        
+        CREATE TABLE Calendario_semanal (
+            fecha_inicio TEXT,
+            fecha_termino TEXT,
+            rut_especialista TEXT NOT NULL
+            PRIMARY KEY (fecha_inicio, fecha_termino),
+            FOREIGN KEY (rut_especialista) REFERENCES Especialista(rut)
+        );                 
+        
         CREATE TABLE Horario_Atencion(
             id INTEGER PRIMARY KEY,
             dia TEXT NOT NULL,
-            inicio INTEGER,
-            fin INTEGER, 
-            valor INTEGER,
-            disponible INTEGER,
-            especialista TEXT NOT NULL,
-            FOREIGN KEY (especialista) REFERENCES Especialista(nombre));
+            hora_inicio INTEGER NOT NULL,
+            hora_fin INTEGER NOT NULL, 
+            precio INTEGER,
+            disponible INTEGER NOT NULL,
+            fecha_inicio TEXT NOT NULL,
+            fecha_termino TEXT NOT NULL,             
+            FOREIGN KEY (fecha_inicio, fecha_termino) REFERENCES Calendario_semanal(fecha_inicio, fecha_termino)
+            );
+                         
+        CREATE TABLE IF NOT EXISTS Prevision (
+            nombre TEXT PRIMARY KEY
+        );
+                         
+        CREATE TABLE IF NOT EXISTS Prevision_especialista (
+            nombre_prevision TEXT NOT NULL,
+            rut_especialista TEXT NOT NULL,
+            FOREIGN KEY (nombre_prevision) REFERENCES Prevision(nombre),
+            FOREIGN KEY (rut_especialista) REFERENCES Especialista(rut),
+            PRIMARY KEY (nombre_prevision, rut_especialista)
+        );
+                         
         COMMIT;
     """)
 
-    cursor.execute("""
-    CREATE TABLE calendario_semanal (
-        fecha_inicio TEXT NOT NULL,
-        fecha_termino TEXT NOT NULL,
-        rut_especialista TEXT NOT NULL
-        PRIMARY KEY (fecha_inicio, fecha_termino),
-        FOREIGN KEY (rut_especialista) REFERENCES Especialista(rut)
-    )
-    """)
-
-    # Crear tabla prevision
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS prevision (
-        nombre TEXT PRIMARY KEY NOT NULL
-    )
-    """)
-
-    # Crear tabla prevision_especialista
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS prevision_especialista (
-        nombre_prevision TEXT NOT NULL,
-        rut_especialista TEXT NOT NULL,
-        FOREIGN KEY (nombre_prevision) REFERENCES prevision(nombre),
-        FOREIGN KEY (rut_especialista) REFERENCES especialista(rut),
-        PRIMARY KEY (nombre_prevision, rut_especialista)
-    )
-    """)
 
     connection.commit() #Guarda los cambios en la BD
 
