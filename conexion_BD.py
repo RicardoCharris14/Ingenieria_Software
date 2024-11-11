@@ -33,12 +33,27 @@ try:
             fecha_termino TEXT NOT NULL,             
             FOREIGN KEY (fecha_inicio, fecha_termino) REFERENCES Calendario_semanal(fecha_inicio, fecha_termino)
             );
+        
+        CREATE TABLE citas (
+        id_cita INTEGER PRIMARY KEY AUTOINCREMENT,
+        rut_paciente TEXT NOT NULL,
+        nombre_paciente TEXT NOT NULL,
+        rut_especialista TEXT NOT NULL,
+        nombre_especialista TEXT NOT NULL,
+        id_horario INTEGER NOT NULL,
+        fecha_cita TEXT NOT NULL,  -- Puedes agregar una fecha de la cita si es necesario
+        FOREIGN KEY (rut_paciente) REFERENCES paciente(rut),
+        FOREIGN KEY (nombre_paciente) REFERENCES paciente(nombre),
+        FOREIGN KEY (rut_especialista) REFERENCES especialista(rut),
+        FOREIGN KEY (nombre_especialista) REFERENCES especialista(nombre),
+        FOREIGN KEY (id_horario) REFERENCES horario(id)
+        );
                          
-        CREATE TABLE IF NOT EXISTS Prevision (
+        CREATE TABLE Prevision (
             nombre TEXT PRIMARY KEY
         );
                          
-        CREATE TABLE IF NOT EXISTS Prevision_especialista (
+        CREATE TABLE Prevision_especialista (
             nombre_prevision TEXT NOT NULL,
             rut_especialista TEXT NOT NULL,
             FOREIGN KEY (nombre_prevision) REFERENCES Prevision(nombre),
