@@ -1,10 +1,25 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 
 app = Flask(__name__)
 
-@app.route("/")
-def home():
-    return "Bienvenido al Hall"
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/paciente')
+def paciente():
+    return render_template('paciente.html')
+
+# Rutas adicionales para otras secciones
+@app.route('/doctor')
+def doctor():
+    return render_template('doctor.html')
+
+@app.route('/administrativo')
+def administrativo():
+    return render_template('administrativo.html')
+
+
 
 @app.route("/user/<name>")
 def user_account(name):

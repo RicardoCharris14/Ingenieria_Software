@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Paciente</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="menu">
+        <h1>Bienvenido a la Página del Paciente</h1>
+        <p>Esta sección contiene información específica para pacientes.</p>
+        <button onclick="location.href='{{ url_for('index') }}'">Volver al Inicio</button>
+    </div>
+</body>
+</html>

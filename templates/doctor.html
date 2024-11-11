@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página del Doctor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="menu">
+        <h1>Bienvenido a la Página del Doctor</h1>
+        <p>Esta sección está dedicada a los doctores. Aquí podrás encontrar toda la información relacionada con tus pacientes y citas.</p>
+        <button onclick="location.href='{{ url_for('index') }}'">Volver al Inicio</button>
+    </div>
+</body>
+</html>

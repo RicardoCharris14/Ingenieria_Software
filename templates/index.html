@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Principal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="menu">
+        <h1>Selecciona una opción</h1>
+            <div class="botones">
+                <button onclick="location.href='{{ url_for('paciente') }}'">Paciente</button>
+                <button onclick="location.href='{{ url_for('doctor') }}'">Doctor</button>
+                <button onclick="location.href='{{ url_for('administrativo') }}'">Administrativo</button>
+            </div>
+    </div>
+</body>
+</html>
