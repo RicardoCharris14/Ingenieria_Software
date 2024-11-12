@@ -21,6 +21,15 @@ def doctor():
 def administrativo():
     return render_template('administrativo.html')
 
+@app.route('/buscar-especialista')
+def buscar_especialista():
+    # Lógica para buscar especialista
+    return render_template('buscar_especialista.html')
+
+@app.route('/consultar-especialistas')
+def consultar_especialistas():
+    # Lógica para consultar especialistas disponibles
+    return render_template('consultar_especialistas.html')
 
 @app.route("/user/<name>")
 def user_account(name):

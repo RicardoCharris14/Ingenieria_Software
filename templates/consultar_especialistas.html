@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultar Especialistas Disponibles</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+<h2>Consultar Especialistas Disponibles</h2>
+
+<input type="text" id="buscadorDisponible" placeholder="Buscar por nombre o especialidad..." onkeyup="filtrarDisponibles()">
+
+<table id="tablaEspecialistas">
+    <thead>
+        <tr>
+            <th onclick="ordenarTabla(0, 'nombre')">Nombre</th>
+            <th onclick="ordenarTabla(1, 'especialidad')">Especialidad</th>
+            <th onclick="ordenarTabla(2, 'disponibilidad')">Disponibilidad</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Dr. Alejandro Pérez</td>
+            <td>Cardiología</td>
+            <td>Disponible</td>
+        </tr>
+        <tr>
+            <td>Dra. Beatriz Gómez</td>
+            <td>Pediatría</td>
+            <td>Disponible</td>
+        </tr>
+        <tr>
+            <td>Dr. Carlos López</td>
+            <td>Neurología</td>
+            <td>No Disponible</td>
+        </tr>
+        <tr>
+            <td>Dr. Diana Rodríguez</td>
+            <td>Dermatología</td>
+            <td>Disponible</td>
+        </tr>
+        <!-- Agrega más filas de ejemplo aquí -->
+    </tbody>
+</table>
+
+<script>
+    window.onload = function() {
+        filtrarDisponibles(); // Aplicar filtro al cargar la página
+    };
+    
+    function filtrarDisponibles() {
+        const buscador = document.getElementById("buscadorDisponible").value.toLowerCase();
+        const filas = document.querySelectorAll("#tablaEspecialistas tbody tr");
+
+        filas.forEach(fila => {
+            const nombreDoctor = fila.cells[0].innerText.toLowerCase();
+            const especialidadDoctor = fila.cells[1].innerText.toLowerCase();
+            const disponibilidad = fila.cells[2].innerText.toLowerCase();
+
+            // Mostrar solo los doctores que están "Disponible" y coinciden con el nombre o la especialidad
+            if (disponibilidad === "disponible" && (nombreDoctor.includes(buscador) || especialidadDoctor.includes(buscador))) {
+                fila.style.display = "";
+            } else {
+                fila.style.display = "none";
+            }
+        });
+    }
+
+    function ordenarTabla(columna, tipo) {
+        const tabla = document.getElementById("tablaEspecialistas");
+        const filas = Array.from(tabla.rows).slice(1);
+        let ordenAscendente = tabla.getAttribute("data-orden") === "ascendente";
+    
+        filas.sort((a, b) => {
+            let valA = a.cells[columna].innerText;
+            let valB = b.cells[columna].innerText;
+            
+            if (tipo === "disponibilidad") {
+                const orden = ["Disponible", "No Disponible"];
+                valA = orden.indexOf(valA);
+                valB = orden.indexOf(valB);
+            } else {
+                valA = valA.toLowerCase();
+                valB = valB.toLowerCase();
+            }
+            
+            return (valA > valB ? 1 : -1) * (ordenAscendente ? 1 : -1);
+        });
+    
+        filas.forEach(fila => tabla.appendChild(fila));
+        tabla.setAttribute("data-orden", ordenAscendente ? "descendente" : "ascendente");
+    }
+</script>
+</body>
+</html>

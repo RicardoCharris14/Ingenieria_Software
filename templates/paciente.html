@@ -10,53 +10,27 @@
     <div class="menu">
         <h1>Bienvenido a la Página del Paciente</h1>
         <p>Esta sección contiene información específica para pacientes.</p>
-
-        <h2>Buscar Especialista</h2>
-
-        <label for="especialidad">Especialidad:</label>
-        <select id="especialidad">
-            <option value="">Todas</option>
-            </select>
-
-        <label for="dia">Día:</label>
-        <select id="dia">
-            <option value="">Todos</option>
-            </select>
-
-        <label for="hora">Hora:</label>
-        <select id="hora">
-            <option value="">Todas</option>
-            </select>
-
-        <label for="doctor">Doctor:</label>
-        <select id="doctor">
-            <option value="">Todos</option>
-            </select>
-
-        <button onclick="buscarHorarios()">Buscar</button>
-
-        <h2>Horarios Disponibles</h2>
+    
+        <!-- Botones para las opciones principales -->
+        <button onclick="location.href='{{ url_for('buscar_especialista') }}'">Buscar Especialista</button>
+        <button onclick="location.href='{{ url_for('consultar_especialistas') }}'">Consultar Especialistas Disponibles</button>
+    
         <div id="horarios"></div>
-
+    
         <button onclick="location.href='{{ url_for('index') }}'">Volver al Inicio</button>
-        <div class="menu">
-
+    </div>
+    
     <div class="menu-superpuesto" id="menuPrecios">
-      <button class="close-button" onclick="cerrarMenuPrecios()">&times;</button>
-      <h2>Costos de Atención</h2>
-      <select id="especialistaCosto">
-        {% for especialista in especialistas %}
-          <option value="{{ especialista.rut }}">{{ especialista.nombre }}</option>
-        {% endfor %}
-      </select>
-      <div id="costoAtencion"></div>
+        <button class="close-button" onclick="cerrarMenuPrecios()">&times;</button>
+        <h2>Costos de Atención</h2>
+        <select id="especialistaCosto">
+            {% for especialista in especialistas %}
+                <option value="{{ especialista.rut }}">{{ especialista.nombre }}</option>
+            {% endfor %}
+        </select>
+        <div id="costoAtencion"></div>
     </div>
-
-    <h1>Bienvenido a la Página del Paciente</h1>
-    <button onclick="mostrarMenuPrecios()">Ver Costos de Atención</button>
-
-    </div>
-    </div>
+    
 
     <script>
         function mostrarMenuPrecios() {

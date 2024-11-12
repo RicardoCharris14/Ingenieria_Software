@@ -67,7 +67,8 @@ button:hover {
   width: 100%;
 }
 
-#horarios th, #horarios td {
+#horarios th,
+#horarios td {
   border: 1px solid #ddd;
   padding: 8px;
   text-align: left;
@@ -104,5 +105,66 @@ button:hover {
   background-color: transparent;
   font-size: 20px;
   cursor: pointer;
+}
 
+/* Tabla de Especialistas */
+#tablaEspecialistas {
+  width: 80%;
+  margin: 20px auto;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+#tablaEspecialistas th,
+#tablaEspecialistas td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #dddddd;
+}
+
+/* Estilos para el encabezado de la tabla */
+#tablaEspecialistas th {
+  background-color: #007bff;
+  color: #ffffff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#tablaEspecialistas th:hover {
+  background-color: #0056b3;
+}
+
+/* Estilos para las filas de la tabla */
+#tablaEspecialistas tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+#tablaEspecialistas tr:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+#tablaEspecialistas tr:hover {
+  background-color: #e2e2e2;
+}
+
+/* Encabezado de sección */
+h1 {
+  color: #4a4a4a;
+  font-size: 1.8em;
+  margin-top: 20px;
+}
+
+/* Adaptación para pantallas pequeñas */
+@media (max-width: 768px) {
+  #tablaEspecialistas {
+    width: 100%;
+  }
+
+  h1 {
+    font-size: 1.5em;
+  }
 }
