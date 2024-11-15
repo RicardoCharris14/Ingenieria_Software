@@ -19,28 +19,19 @@ try:
             rut TEXT PRIMARY KEY,
             nombre TEXT NOT NULL,
             especialidad TEXT NOT NULL,
+            valor_atencion INTEGER NOT NULL,
             telefono TEXT NOT NULL,
             correo TEXT NOT NULL
-        );
-        
-        CREATE TABLE Calendario_semanal (
-            fecha_inicio TEXT,
-            fecha_termino TEXT,
-            rut_especialista TEXT NOT NULL,
-            PRIMARY KEY (fecha_inicio, fecha_termino),
-            FOREIGN KEY (rut_especialista) REFERENCES Especialista(rut)
-        );                 
+        );         
         
         CREATE TABLE Horario_Atencion(
             id INTEGER PRIMARY KEY,
-            dia TEXT NOT NULL,
+            fecha TEXT NOT NULL,
             hora_inicio INTEGER NOT NULL,
-            hora_fin INTEGER NOT NULL, 
-            precio INTEGER,
-            disponible INTEGER NOT NULL,
-            fecha_inicio TEXT NOT NULL,
-            fecha_termino TEXT NOT NULL,             
-            FOREIGN KEY (fecha_inicio, fecha_termino) REFERENCES Calendario_semanal(fecha_inicio, fecha_termino)
+            hora_fin INTEGER NOT NULL,
+            rut_especialista TEXT NOT NULL,
+            disponible INTEGER NOT NULL,           
+            FOREIGN KEY (rut_especialista) REFERENCES Especialista(rut)
         );
         
         CREATE TABLE Citas (
