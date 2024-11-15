@@ -1,5 +1,20 @@
 import sqlite3
 
+
+def modificar_disponibilidad_horario(id_horario, disponibilidad):
+    try:
+        connection = sqlite3.connect("./src/Database/bd")
+        cursor = connection.cursor()
+
+        cursor.execute("UPDATE Horario_Atencion SET disponible = ? WHERE id = ?", (disponibilidad, id_horario))
+
+        connection.commit()
+
+    except Exception as ex:
+        print(ex)
+    finally:
+        connection.close() 
+
 def obtener_especialidades():
     try:
         connection = sqlite3.connect("./src/Database/bd")
