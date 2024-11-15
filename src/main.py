@@ -27,6 +27,10 @@ def buscar_especialista():
     especialistas = DB_functions.obtener_doctores()
     return render_template('buscar_especialistas.html', especialistas=especialistas)
 
+@app.route('/agendar_hora')
+def agendar_hora():
+    return render_template('agendar_hora.html')
+
 @app.route('/consultar-especialistas')
 def consultar_especialistas():
     # Lógica para consultar especialistas disponibles

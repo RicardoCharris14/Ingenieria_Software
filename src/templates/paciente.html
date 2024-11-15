@@ -7,6 +7,19 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
+<div class="tab">
+        <a href="#fonasa"><button class="tablinks" onclick="mostrarFonasa(), cerrarIsapre(), cerrarMediosPago(), cerrarMenuPrecios()">Fonasa</button></a>
+        <a href="#isapre"><button class="tablinks" onclick="mostrarIsapre(), cerrarMediosPago(), cerrarMenuPrecios(), cerrarFonasa()">Isapre</button></a>
+        <a href="#pagos"><button class="tablinks" onclick="mostrarMediosPago(), cerrarMenuPrecios(), cerrarFonasa(),cerrarIsapre()">Medios de Pago</button></a>
+        <a href="#menuPrecios"><button class="tablinks" onclick="mostrarMenuPrecios(), cerrarFonasa(),cerrarIsapre(), cerrarMediosPago()">Costos de Atención</button></a>
+        <a href="#agendar"><button onclick="location.href='{{ url_for('agendar_hora') }}'">Reservar</button></a>
+       <!-- <div class="search-container">
+            <form action="/buscar">
+                <input type="text" placeholder="Buscar..." name="search">
+                <button type="submit">Buscar</button>
+            </form>
+        </div> esta función será aplicada luego -->
+    </div>
     <div class="menu">
         <h1>Bienvenido a la Página del Paciente</h1>
         <p>Esta sección contiene información específica para pacientes.</p>
@@ -19,7 +32,19 @@
     
         <button onclick="location.href='{{ url_for('index') }}'">Volver al Inicio</button>
     </div>
-    
+
+
+
+    <div id="previsiones" class="tabcontent">
+        <h3>Previsiones por Especialista</h3>
+        <select id="especialistaPrevision">
+            {% for especialista in especialistas %}
+            <option value="{{ especialista.rut }}">{{ especialista.nombre }}</option>
+            {% endfor %}
+        </select>
+        <div id="listaPrevisiones"></div>
+    </div>
+
     <div class="menu-superpuesto" id="menuPrecios">
         <button class="close-button" onclick="cerrarMenuPrecios()">&times;</button>
         <h2>Costos de Atención</h2>
@@ -30,6 +55,32 @@
         </select>
         <div id="costoAtencion"></div>
     </div>
+<div class="menu-superpuesto" id="isapre">
+        <button class="close-button" onclick="cerrarIsapre()">&times;</button>
+        <h2>Especialistas adheridos a Isapre</h2>
+        <select id="isapre">
+            <!-- aplicar code luego -->
+        </select>
+        <div id="infIsapre"></div>
+    </div>
+<div class="menu-superpuesto" id="fonasa">
+        <button class="close-button" onclick="cerrarFonasa()">&times;</button>
+        <h2>Especialistas adheridos a Fonasa</h2>
+        <select id="fonasa">
+            <!-- aplicar luego -->>
+        </select>
+        <div id="infFonasa"></div>
+    </div>
+<div class="menu-superpuesto" id="pagos">
+        <button class="close-button" onclick="cerrarMediosPago()" >&times;</button>
+        <h2>Medios de Pago</h2>
+        <select id="pagos">
+            <!-- poner luego aquí también una opción
+            para conectar a BD y que permita añadir un
+             filtro según la previsión (isapre, fonasa o particular) -->
+        </select>
+        <div id="menuPagos"></div>
+    </div>
     
 
     <script>
@@ -39,6 +90,27 @@
 
     function cerrarMenuPrecios() {
       document.getElementById("menuPrecios").style.display = "none";
+    }
+    function mostrarMediosPago() {
+      document.getElementById("pagos").style.display = "block";
+    }
+
+    function cerrarMediosPago() {
+      document.getElementById("pagos").style.display = "none";
+    }
+    function mostrarIsapre() {
+      document.getElementById("isapre").style.display = "block";
+    }
+
+    function cerrarIsapre() {
+      document.getElementById("isapre").style.display = "none";
+    }
+    function mostrarFonasa() {
+      document.getElementById("fonasa").style.display = "block";
+    }
+
+    function cerrarFonasa() {
+      document.getElementById("fonasa").style.display = "none";
     }
 
 
