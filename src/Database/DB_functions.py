@@ -116,6 +116,29 @@ def obtener_costo_atencion(rut_especialista):
     finally:
         connection.close()
 
+#Funcion nuevas
+def obtener_horarios_especialistas(rut_especialista):
+    try:
+        connection = sqlite3.connect("./src/Database/bd")
+        cursor = connection.cursor()
+        
+        query = """
+        SELECT e.nombre AS especialista, h.fecha, h.hora_inicio, h.hora_fin, h.disponible
+        FROM Especialista e
+        INNER JOIN Horario_Atencion h ON e.rut = h.rut_especialista
+        WHERE e.rut = ?
+        """
+        cursor.execute(query, (rut_especialista,))
+        horarios = cursor.fetchall()
+
+        connection.close()
+        return horarios
+    except Exception as ex:
+        print(ex)
+        return None  #Devuelve O, un valor por defecto en caso de error
+    finally:
+        connection.close()
 
 # * modificar obtener_costo_atencion
 # * crear metodo para cambiar parametros
+

@@ -27,8 +27,8 @@ try:
         CREATE TABLE Horario_Atencion(
             id INTEGER PRIMARY KEY,
             fecha TEXT NOT NULL,
-            hora_inicio INTEGER NOT NULL,
-            hora_fin INTEGER NOT NULL,
+            hora_inicio TEXT NOT NULL,
+            hora_fin TEXT NOT NULL,
             rut_especialista TEXT NOT NULL,
             disponible INTEGER NOT NULL,           
             FOREIGN KEY (rut_especialista) REFERENCES Especialista(rut)

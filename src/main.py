@@ -17,7 +17,27 @@ def paciente():
 # Rutas adicionales para otras secciones
 @app.route('/doctor')
 def doctor():
-    return render_template('doctor.html')
+    #Inicio Cambio
+    especialistas = DB_functions.obtener_doctores()
+    especialistas_horarios = []
+    for especialista in especialistas:
+        # Obtener los horarios para cada especialista
+        horarios = DB_functions.obtener_horarios_especialistas(especialista['rut'])  # Usamos rut para obtener los horarios
+        especialistas_horarios.append({
+            'especialista': especialista,
+            'horarios': horarios
+        })
+    
+    #Fin Cambio
+    return render_template('doctor.html', especialistas_horarios=especialistas_horarios)
+
+#FUNCION NUEVA
+@app.route('/ver_horarios/<rut_especialista>')
+def ver_horarios(rut_especialista):
+    horarios = DB_functions.obtener_horarios_especialista(rut_especialista)
+    if horarios is None:
+        return jsonify({'error': 'No se pudieron obtener los horarios'}), 500
+    return render_template('ver_horarios.html', horarios=horarios)
 
 @app.route('/administrativo')
 def administrativo():
