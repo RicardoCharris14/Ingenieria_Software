@@ -7,10 +7,46 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <div class="menu">
-        <h1>Bienvenido a la Página del Doctor</h1>
-        <p>Esta sección está dedicada a los doctores. Aquí podrás encontrar toda la información relacionada con tus pacientes y citas.</p>
-        <button onclick="location.href='{{ url_for('index') }}'">Volver al Inicio</button>
-    </div>
+    <h1>Especialistas y sus Horarios</h1>
+    
+    <table id="tablaEspecialistas">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Especialidad</th>
+                <th>Horario</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in especialistas_horarios %}
+                <tr>
+                    <td>{{ item.especialista.nombre }}</td>
+                    <td>{{ item.especialista.especialidad }}</td>
+                    <td>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Hora de Inicio</th>
+                                    <th>Hora de Fin</th>
+                                    <th>Disponibilidad</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for horario in item.horarios %}
+                                    <tr>
+                                        <td>{{ horario[1] }}</td> <!-- Fecha -->
+                                        <td>{{ horario[2] }}</td> <!-- Hora de inicio -->
+                                        <td>{{ horario[3] }}</td> <!-- Hora de fin -->
+                                        <td>{{ 'Disponible' if horario[4] else 'No disponible' }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>
