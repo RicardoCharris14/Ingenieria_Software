@@ -12,7 +12,7 @@
         <a href="#isapre"><button class="tablinks" onclick="mostrarIsapre(), cerrarMediosPago(), cerrarMenuPrecios(), cerrarFonasa()">Isapre</button></a>
         <a href="#pagos"><button class="tablinks" onclick="mostrarMediosPago(), cerrarMenuPrecios(), cerrarFonasa(),cerrarIsapre()">Medios de Pago</button></a>
         <a href="#menuPrecios"><button class="tablinks" onclick="mostrarMenuPrecios(), cerrarFonasa(),cerrarIsapre(), cerrarMediosPago()">Costos de Atención</button></a>
-        <a href="#agendar"><button onclick="location.href='{{ url_for('agendar_hora') }}'">Reservar</button></a>
+        <a href="#seleccionarEspecialista"><button onclick="location.href='{{ url_for('seleccionar_especialista') }}'">Reservar</button></a>
        <!-- <div class="search-container">
             <form action="/buscar">
                 <input type="text" placeholder="Buscar..." name="search">
@@ -26,10 +26,6 @@
     
         <!-- Botones para las opciones principales -->
         <button onclick="location.href='{{ url_for('buscar_especialista') }}'">Buscar Especialista</button>
-        <button onclick="location.href='{{ url_for('consultar_especialistas') }}'">Consultar Especialistas Disponibles</button>
-    
-        <div id="horarios"></div>
-    
         <button onclick="location.href='{{ url_for('index') }}'">Volver al Inicio</button>
     </div>
 
