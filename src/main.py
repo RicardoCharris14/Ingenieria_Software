@@ -2,6 +2,8 @@ from flask import Flask, jsonify, request, render_template
 
 from Database import DB_functions
 
+
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -53,9 +55,10 @@ def seleccionar_especialista():
 
 @app.route('/<rutP>/seleccionar_especialista/agendar_hora/<rutE>')
 def agendar_hora(rutP, rutE):
-    horarios = DB_functions.obtener_horarios_disponibles("", "", "", rutE)
+    fechas = DB_functions.obtener_periodo_temporal()
+    horarios = DB_functions.obtener_horarios_disponibles("", fechas[0]['fecha_inicio'], fechas[0]['fecha_final'],"", rutE)
     participantes = {'paciente': rutP, 'especialista': rutE}
-    return render_template('agendar_hora.html', participantes)
+    return render_template('agendar_hora.html', participantes=participantes, horarios=horarios)
 
 
 #codigo para buscar horarios, especialidades y especialistas. También precios.

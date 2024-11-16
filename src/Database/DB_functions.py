@@ -47,7 +47,7 @@ def obtener_horarios_disponibles(especialidad, primer_dia, ultimo_dia, hora, doc
         cursor = connection.cursor()
 
         # Construir la consulta SQL con filtros
-        query = "SELECT H.dia, E.nombre, H.hora_inicio, H.precio, P.nombre " \
+        query = "SELECT E.nombre, H.fecha, H.hora_inicio, H.hora_fin " \
                 "FROM Especialista E " \
                 "LEFT JOIN Horario_Atencion H ON H.rut_especialista = E.rut " \
                 "WHERE H.disponible = 1"
@@ -57,10 +57,10 @@ def obtener_horarios_disponibles(especialidad, primer_dia, ultimo_dia, hora, doc
             query += " AND E.especialidad = ?"
             params.append(especialidad)
         if primer_dia:
-            query += " AND H.dia > ?"
+            query += " AND H.fecha > ?"
             params.append(primer_dia)
         if ultimo_dia:
-            query += " AND H.dia < ?"
+            query += " AND H.fecha < ?"
             params.append(ultimo_dia)
         if hora:
             query += " AND H.hora_inicio = ?"
@@ -70,7 +70,7 @@ def obtener_horarios_disponibles(especialidad, primer_dia, ultimo_dia, hora, doc
             params.append(doctor)
 
         cursor.execute(query, tuple(params))
-        horarios = cursor.fetchall()
+        horarios = [{'especialista': row[0], 'fecha': row[1], 'hora_inicio': row[2], 'hora_fin': row[3]} for row in cursor.fetchall]
         return horarios
     except Exception as ex:
         print(ex)
@@ -78,6 +78,25 @@ def obtener_horarios_disponibles(especialidad, primer_dia, ultimo_dia, hora, doc
     finally:
         connection.close()
 
+def obtener_periodo_temporal():
+    try:
+        connection = sqlite3.connect("./src/Database/bd")
+        cursor = connection.cursor()
+
+        cursor.execute(
+            """
+            SELECT fecha_inicio, fecha_final FROM Parametro
+            """
+        )
+        parametros = [{'fecha_inicio': row[0], 'fecha_final': row[1]} for row in cursor.fetchall]
+        return parametros
+    except Exception as ex:
+        print(ex)
+        return []
+    finally:
+        connection.close()
+
+#Modificar pues valor se movio a especialista
 def obtener_costo_atencion(rut_especialista):
     try:
         connection = sqlite3.connect("./src/Database/bd")
@@ -117,4 +136,7 @@ def obtener_horarios_especialistas(rut_especialista):
         return None  #Devuelve O, un valor por defecto en caso de error
     finally:
         connection.close()
+
+# * modificar obtener_costo_atencion
+# * crear metodo para cambiar parametros
 

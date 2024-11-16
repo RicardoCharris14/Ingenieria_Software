@@ -34,7 +34,7 @@ try:
             FOREIGN KEY (rut_especialista) REFERENCES Especialista(rut)
         );
         
-        CREATE TABLE Citas (
+        CREATE TABLE Cita (
             id_cita INTEGER PRIMARY KEY AUTOINCREMENT,
             rut_paciente TEXT NOT NULL,
             rut_especialista TEXT NOT NULL,
@@ -55,6 +55,12 @@ try:
             FOREIGN KEY (nombre_prevision) REFERENCES Prevision(nombre),
             FOREIGN KEY (rut_especialista) REFERENCES Especialista(rut),
             PRIMARY KEY (nombre_prevision, rut_especialista)
+        );
+                         
+        CREATE TABLE Parametro (
+            id NUMBER PRIMARY KEY,
+            fecha_inicio TEXT NOT NULL,
+            fecha_final TEXT NOT NULL
         );
                          
         COMMIT;
