@@ -27,16 +27,15 @@ def buscar_especialista():
     especialistas = DB_functions.obtener_doctores()
     return render_template('buscar_especialistas.html', especialistas=especialistas)
 
-@app.route('/agendar_hora')
-def agendar_hora():
-    return render_template('agendar_hora.html')
+@app.route('/seleccionar_especialista')
+def seleccionar_especialista():
+    return render_template('seleccionar_especialista.html')
 
-@app.route('/consultar-especialistas')
-def consultar_especialistas():
-    # Lógica para consultar especialistas disponibles
-    especialistas = DB_functions.obtener_doctores()
-    return render_template('consultar_especialistas.html', especialistas=especialistas)
-
+@app.route('<rutP>/seleccionar_especialista/agendar_hora/<rutE>')
+def agendar_hora(rutP, rutE):
+    horarios = DB_functions.obtener_horarios_disponibles("", "", "", rutE)
+    participantes = {'paciente': rutP, 'especialista': rutE}
+    return render_template('agendar_hora.html', participantes)
 
 
 #codigo para buscar horarios, especialidades y especialistas. También precios.
