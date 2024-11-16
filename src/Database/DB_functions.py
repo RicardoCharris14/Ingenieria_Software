@@ -41,26 +41,27 @@ def obtener_doctores():
     finally:
         connection.close()
 
-def obtener_horarios(especialidad, dia, hora, doctor):
+def obtener_horarios_disponibles(especialidad, primer_dia, ultimo_dia, hora, doctor):
     try:
         connection = sqlite3.connect("./src/Database/bd")
         cursor = connection.cursor()
 
         # Construir la consulta SQL con filtros
         query = "SELECT H.dia, E.nombre, H.hora_inicio, H.precio, P.nombre " \
-                "FROM Horario_Atencion H " \
-                "JOIN Especialista E ON H.rut_especialista = E.rut " \
-                "JOIN Prevision_especialista PE ON E.rut = PE.rut_especialista " \
-                "JOIN Prevision P ON PE.nombre_prevision = P.nombre " \
+                "FROM Especialista E " \
+                "LEFT JOIN Horario_Atencion H ON H.rut_especialista = E.rut " \
                 "WHERE H.disponible = 1"
 
         params = []
         if especialidad:
             query += " AND E.especialidad = ?"
             params.append(especialidad)
-        if dia:
-            query += " AND H.dia = ?"
-            params.append(dia)
+        if primer_dia:
+            query += " AND H.dia > ?"
+            params.append(primer_dia)
+        if ultimo_dia:
+            query += " AND H.dia < ?"
+            params.append(ultimo_dia)
         if hora:
             query += " AND H.hora_inicio = ?"
             params.append(hora)
@@ -93,3 +94,4 @@ def obtener_costo_atencion(rut_especialista):
         return None  #Devuelve O, un valor por defecto en caso de error
     finally:
         connection.close()
+
