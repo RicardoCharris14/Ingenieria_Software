@@ -14,6 +14,7 @@ try:
         DROP TABLE IF EXISTS Prevision;
         DROP TABLE IF EXISTS Especialista;
         DROP TABLE IF EXISTS Paciente;
+        DROP TABLE IF EXISTS Parametros;
 
         COMMIT;
         """
