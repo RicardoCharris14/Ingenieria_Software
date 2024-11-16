@@ -31,7 +31,7 @@ def buscar_especialista():
 def seleccionar_especialista():
     return render_template('seleccionar_especialista.html')
 
-@app.route('<rutP>/seleccionar_especialista/agendar_hora/<rutE>')
+@app.route('/<rutP>/seleccionar_especialista/agendar_hora/<rutE>')
 def agendar_hora(rutP, rutE):
     horarios = DB_functions.obtener_horarios_disponibles("", "", "", rutE)
     participantes = {'paciente': rutP, 'especialista': rutE}
