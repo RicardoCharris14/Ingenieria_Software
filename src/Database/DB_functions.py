@@ -47,7 +47,7 @@ def obtener_horarios_disponibles(especialidad, primer_dia, ultimo_dia, hora, doc
         cursor = connection.cursor()
 
         # Construir la consulta SQL con filtros
-        query = "SELECT E.nombre, H.fecha, H.hora_inicio, H.hora_fin " \
+        query = "SELECT E.nombre, H.fecha, H.hora_inicio, H.hora_fin, H.id " \
                 "FROM Especialista E " \
                 "LEFT JOIN Horario_Atencion H ON H.rut_especialista = E.rut " \
                 "WHERE H.disponible = 1"
@@ -69,8 +69,10 @@ def obtener_horarios_disponibles(especialidad, primer_dia, ultimo_dia, hora, doc
             query += " AND E.rut = ?"
             params.append(doctor)
 
+        query += " ORDER BY H.fecha ASC"
+
         cursor.execute(query, tuple(params))
-        horarios = [{'especialista': row[0], 'fecha': row[1], 'hora_inicio': row[2], 'hora_fin': row[3]} for row in cursor.fetchall]
+        horarios = [{'especialista': row[0], 'fecha': row[1], 'hora_inicio': row[2], 'hora_fin': row[3], 'id':row[4]} for row in cursor.fetchall]
         return horarios
     except Exception as ex:
         print(ex)
