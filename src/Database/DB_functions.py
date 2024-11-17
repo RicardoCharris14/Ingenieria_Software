@@ -57,10 +57,10 @@ def obtener_horarios_disponibles(especialidad, primer_dia, ultimo_dia, hora, doc
             query += " AND E.especialidad = ?"
             params.append(especialidad)
         if primer_dia:
-            query += " AND H.fecha > ?"
+            query += " AND H.fecha >= ?"
             params.append(primer_dia)
         if ultimo_dia:
-            query += " AND H.fecha < ?"
+            query += " AND H.fecha <= ?"
             params.append(ultimo_dia)
         if hora:
             query += " AND H.hora_inicio = ?"
@@ -72,7 +72,7 @@ def obtener_horarios_disponibles(especialidad, primer_dia, ultimo_dia, hora, doc
         query += " ORDER BY H.fecha ASC"
 
         cursor.execute(query, tuple(params))
-        horarios = [{'especialista': row[0], 'fecha': row[1], 'hora_inicio': row[2], 'hora_fin': row[3], 'id':row[4]} for row in cursor.fetchall]
+        horarios = [{'especialista': row[0], 'fecha': row[1], 'hora_inicio': row[2], 'hora_fin': row[3], 'id':row[4]} for row in cursor.fetchall()]
         return horarios
     except Exception as ex:
         print(ex)
@@ -90,13 +90,48 @@ def obtener_periodo_temporal():
             SELECT fecha_inicio, fecha_final FROM Parametro
             """
         )
-        parametros = [{'fecha_inicio': row[0], 'fecha_final': row[1]} for row in cursor.fetchall]
+        parametros = [{'fecha_inicio': row[0], 'fecha_final': row[1]} for row in cursor.fetchall()]
         return parametros
     except Exception as ex:
         print(ex)
         return []
     finally:
         connection.close()
+
+def reservar_horario(rutPaciente, rutEspecialista, idHorario):
+    try:
+        connection = sqlite3.connect("./src/Database/bd")
+        cursor = connection.cursor()
+
+        cursor.execute(
+            """
+            INSERT INTO Cita (id_horario, rut_paciente, rut_especialista) VALUES (?, ?, ?)
+            """, (idHorario, rutPaciente, rutEspecialista)
+        )
+        connection.commit()
+    except Exception as ex:
+        print(ex)
+    finally:
+        connection.close()
+
+def bloquear_horario(id):
+    try:
+        connection = sqlite3.connect("./src/Database/bd")
+        cursor = connection.cursor()
+
+        cursor.execute(
+            """
+            UPDATE Horario_Atencion
+            SET disponible = 0
+            WHERE id = ?
+            """,(id,)
+            )
+        connection.commit()
+    except Exception as ex:
+        print(ex)
+    finally:
+        connection.close()
+
 
 #Modificar pues valor se movio a especialista
 def obtener_costo_atencion(rut_especialista):

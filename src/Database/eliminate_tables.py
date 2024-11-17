@@ -9,12 +9,12 @@ try:
         BEGIN;
 
         DROP TABLE IF EXISTS Prevision_Especialista;
-        DROP TABLE IF EXISTS Citas;
+        DROP TABLE IF EXISTS Cita;
         DROP TABLE IF EXISTS Horario_Atencion;
         DROP TABLE IF EXISTS Prevision;
         DROP TABLE IF EXISTS Especialista;
         DROP TABLE IF EXISTS Paciente;
-        DROP TABLE IF EXISTS Parametros;
+        DROP TABLE IF EXISTS Parametro;
 
         COMMIT;
         """

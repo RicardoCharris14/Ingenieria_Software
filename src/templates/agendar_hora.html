@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="{{ url_for('static', filename='js/agendar_hora.js') }}" type="text/javascript"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/agendar_hora.css') }}">
+    <title>Agendar hora</title>
+</head>
+<body>
+    <h1 id="titulo_calendario">Seleccione un horario</h1>
+    <table>
+        <thead>
+            <tr>
+                {% for fecha in fechas %}
+                <th>{{fecha}}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {% for fecha in fechas %}
+                <td>
+                    <ul>
+                        {% for horario in horarios %}
+                        {% if horario.fecha == fecha %}
+                        <li class="horas_atencion" data-id="{{horario.id}}">{{horario.hora_inicio}} - {{horario.hora_fin}}</li>
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                </td>
+                {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+    <button id="reservarBtn">Reservar</button>
+
+    <script>
+        const participantes = {{ participantes | tojson }};
+    </script>
+</body>
+</html>

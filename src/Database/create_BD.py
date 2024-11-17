@@ -35,11 +35,10 @@ try:
         );
         
         CREATE TABLE Cita (
-            id_cita INTEGER PRIMARY KEY AUTOINCREMENT,
+            id_horario INTEGER PRIMARY KEY,
             rut_paciente TEXT NOT NULL,
             rut_especialista TEXT NOT NULL,
-            id_horario INTEGER NOT NULL,
-            asistio INTEGER NOT NULL,
+            asistio INTEGER,
             FOREIGN KEY (rut_paciente) REFERENCES Paciente(rut),
             FOREIGN KEY (rut_especialista) REFERENCES Especialista(rut),
             FOREIGN KEY (id_horario) REFERENCES Horario_Atencion(id)

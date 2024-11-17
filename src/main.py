@@ -61,10 +61,24 @@ def agendar_hora(rutP, rutE):
     for horario in horarios:
         if horario['fecha'] not in fechas:
             fechas.append(horario['fecha'])
-
     participantes = {'paciente': rutP, 'especialista': rutE}
     return render_template('agendar_hora.html', participantes=participantes, horarios=horarios, fechas=fechas)
 
+@app.route('/reservar_cita', methods=['POST'])
+def reservar():
+    data = request.get_json()
+    id = int(data.get('id'))
+    rutP = data.get('rutPaciente')
+    rutE = data.get('rutEspecialista')
+    print(f"id: {id}, rut paciente: {rutP}, rut especialista: {rutE}")
+    try:
+        DB_functions.reservar_horario(rutP, rutE, id)
+        DB_functions.bloquear_horario(id)
+        return jsonify({'success': True})
+    except Exception as ex:
+        print(ex)
+        return jsonify({'success': False, 'error': str(ex)})
+    
 
 #codigo para buscar horarios, especialidades y especialistas. También precios.
 
