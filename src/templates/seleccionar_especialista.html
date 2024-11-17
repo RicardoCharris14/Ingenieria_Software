@@ -1,14 +1,79 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agendar Hora</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Buscar Especialista</title>
 </head>
 <body>
-    <h1>Agendar Hora</h1>
-    <p>Formulario para agendar hora</p>
-    <button onclick="location.href='{{ url_for('paciente') }}'">Volver a página Paciente</button>
-    </body>
+    <h1>Buscar Especialista</h1>
+    <input type="text" id="buscador" placeholder="Buscar por nombre o especialidad..." onkeyup="filtrarDoctores()">
+
+    <table id="tablaEspecialistas">
+        <thead>
+            <tr>
+                <th onclick="ordenarTabla(0, 'nombre')">Nombre</th>
+                <th onclick="ordenarTabla(1, 'especialidad')">Especialidad</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for especialista in especialistas %}
+            <tr>
+                <tbody>
+                    {% for especialista in especialistas %}
+                    <tr onclick="window.location.href='/paciente/seleccionar_especialista/agendar_hora/{{ especialista.rut }}'">
+                        <td>{{ especialista.nombre }}</td>
+                        <td>{{ especialista.especialidad }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        let ordenAscendente = true;
+
+        function ordenarTabla(columna, tipo) {
+            const tabla = document.getElementById("tablaEspecialistas");
+            const filas = Array.from(tabla.rows).slice(1); // Excluye la cabecera
+            filas.sort((a, b) => {
+                let valorA = a.cells[columna].innerText.toLowerCase();
+                let valorB = b.cells[columna].innerText.toLowerCase();
+
+                if (tipo === 'disponibilidad') {
+                    const estadoOrden = { "disponible": 1, "no disponible": 2 };
+                    valorA = estadoOrden[valorA];
+                    valorB = estadoOrden[valorB];
+                }
+
+                if (valorA < valorB) return ordenAscendente ? -1 : 1;
+                if (valorA > valorB) return ordenAscendente ? 1 : -1;
+                return 0;
+            });
+
+            ordenAscendente = !ordenAscendente; // Cambia el orden para la próxima vez
+            filas.forEach(fila => tabla.tBodies[0].appendChild(fila)); // Actualiza la tabla
+        }
+
+        function filtrarDoctores() {
+            const buscador = document.getElementById("buscador").value.toLowerCase();
+            const filas = document.querySelectorAll("#tablaEspecialistas tbody tr");
+
+            filas.forEach(fila => {
+                const nombreDoctor = fila.cells[0].innerText.toLowerCase();
+                const especialidadDoctor = fila.cells[1].innerText.toLowerCase();
+
+                // Mostrar u ocultar la fila si coincide el nombre o la especialidad
+                if (nombreDoctor.includes(buscador) || especialidadDoctor.includes(buscador)) {
+                    fila.style.display = "";
+                } else {
+                    fila.style.display = "none";
+                }
+            });
+        }
+    </script>
+</body>
 </html>
