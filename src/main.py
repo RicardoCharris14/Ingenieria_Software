@@ -34,7 +34,7 @@ def doctor():
 #FUNCION NUEVA
 @app.route('/ver_horarios/<rut_especialista>')
 def ver_horarios(rut_especialista):
-    horarios = DB_functions.obtener_horarios_especialista(rut_especialista)
+    horarios = DB_functions.obtener_horarios_especialistas(rut_especialista)
     if horarios is None:
         return jsonify({'error': 'No se pudieron obtener los horarios'}), 500
     return render_template('ver_horarios.html', horarios=horarios)
@@ -43,8 +43,8 @@ def ver_horarios(rut_especialista):
 def administrativo():
     return render_template('administrativo.html')
 
-@app.route('/buscar-especialista')
-def buscar_especialista():
+@app.route('/buscar_especialistas')
+def buscar_especialistas():
     # Lógica para buscar especialista
     especialistas = DB_functions.obtener_doctores()
     return render_template('buscar_especialistas.html', especialistas=especialistas)
@@ -54,29 +54,16 @@ def seleccionar_especialista():
     especialistas = DB_functions.obtener_doctores()
     return render_template('seleccionar_especialista.html', especialistas=especialistas)
 
-
-@app.route('/paciente/seleccionar_especialista/agendar_hora/<rutE>')
-def agendar_hora(rutE):
+@app.route('/<rutP>/paciente/seleccionar_especialista/agendar_hora/<rutE>')
+def agendar_hora(rutP, rutE):
     intervalo = DB_functions.obtener_periodo_temporal()
-    horarios = DB_functions.obtener_horarios_disponibles("", intervalo[0]['fecha_inicio'], intervalo[0]['fecha_final'], "", rutE)
+    horarios = DB_functions.obtener_horarios_disponibles("", intervalo[0]['fecha_inicio'], intervalo[0]['fecha_final'],"", rutE)
     fechas = []
     for horario in horarios:
         if horario['fecha'] not in fechas:
             fechas.append(horario['fecha'])
-    participantes = {'especialista': rutE}
+    participantes = {'paciente': rutP, 'especialista': rutE}
     return render_template('agendar_hora.html', participantes=participantes, horarios=horarios, fechas=fechas)
-
-
-#@app.route('/<rutP>/paciente/seleccionar_especialista/agendar_hora/<rutE>')
-#def agendar_hora(rutP, rutE):
-#    intervalo = DB_functions.obtener_periodo_temporal()
-#    horarios = DB_functions.obtener_horarios_disponibles("", intervalo[0]['fecha_inicio'], intervalo[0]['fecha_final'],"", rutE)
-#    fechas = []
-#    for horario in horarios:
-#        if horario['fecha'] not in fechas:
-#            fechas.append(horario['fecha'])
-#    participantes = {'paciente': rutP, 'especialista': rutE}
-#    return render_template('agendar_hora.html', participantes=participantes, horarios=horarios, fechas=fechas)
 
 @app.route('/reservar_cita', methods=['POST'])
 def reservar():
@@ -86,8 +73,8 @@ def reservar():
     rutE = data.get('rutEspecialista')
     print(f"id: {id}, rut paciente: {rutP}, rut especialista: {rutE}")
     try:
-        DB_functions.reservar_horario(rutP, rutE, id)
-        DB_functions.bloquear_horario(id)
+        if(DB_functions.reservar_horario(rutP, rutE, id)):
+            DB_functions.bloquear_horario(id)
         return jsonify({'success': True})
     except Exception as ex:
         print(ex)

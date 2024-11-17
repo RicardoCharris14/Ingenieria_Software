@@ -25,7 +25,7 @@
         <p>Esta sección contiene información específica para pacientes.</p>
     
         <!-- Botones para las opciones principales -->
-        <button onclick="location.href='{{ url_for('buscar_especialista') }}'">Buscar Especialista</button>
+        <button onclick="location.href='{{ url_for('buscar_especialistas') }}'">Buscar Especialista</button>
         <button onclick="location.href='{{ url_for('index') }}'">Volver al Inicio</button>
     </div>
 
@@ -196,7 +196,7 @@
         }
     })
     .catch(error => console.error('Error al obtener los horarios:', error));
-}
+    }
     </script>
 </body>
 </html>

@@ -109,10 +109,17 @@ def reservar_horario(rutPaciente, rutEspecialista, idHorario):
             """, (idHorario, rutPaciente, rutEspecialista)
         )
         connection.commit()
+
+        if cursor.rowcount == 0:
+            return 0
+        else:
+            return 1
     except Exception as ex:
         print(ex)
     finally:
         connection.close()
+
+
 
 def bloquear_horario(id):
     try:
