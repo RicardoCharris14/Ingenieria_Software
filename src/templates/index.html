@@ -12,7 +12,7 @@
         <h2>¿Es usted un?</h2>
             <div class="botones">
                 <button onclick="location.href='{{ url_for('paciente') }}'">Paciente</button>
-                <button onclick="location.href='{{ url_for('doctor') }}'">Doctor</button>
+                <button onclick="location.href='{{ url_for('doctor', rutE='12345678-9') }}'">Doctor</button>
                 <button onclick="location.href='{{ url_for('administrativo') }}'">Administrativo</button>
             </div>
     </div>

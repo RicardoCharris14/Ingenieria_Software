@@ -15,21 +15,17 @@ def paciente():
     return render_template('paciente.html')
 
 # Rutas adicionales para otras secciones
-@app.route('/doctor')
-def doctor():
-    #Inicio Cambio
-    especialistas = DB_functions.obtener_doctores()
-    especialistas_horarios = []
-    for especialista in especialistas:
-        # Obtener los horarios para cada especialista
-        horarios = DB_functions.obtener_horarios_especialistas(especialista['rut'])  # Usamos rut para obtener los horarios
-        especialistas_horarios.append({
-            'especialista': especialista,
-            'horarios': horarios
-        })
+@app.route('/<rutE>/doctor')
+def doctor(rutE):
+    especialista = DB_functions.obtener_doctores(rutE)
+    horarios = DB_functions.obtener_horarios_especialistas(rutE)  # Usamos rut para obtener los horarios
+    especialista_horarios = {
+        'especialista': especialista,
+        'horarios': horarios
+    }
     
     #Fin Cambio
-    return render_template('doctor.html', especialistas_horarios=especialistas_horarios)
+    return render_template('doctor.html', especialista_horarios=especialista_horarios)
 
 #FUNCION NUEVA
 @app.route('/ver_horarios/<rut_especialista>')
@@ -41,17 +37,28 @@ def ver_horarios(rut_especialista):
 
 @app.route('/administrativo')
 def administrativo():
-    return render_template('administrativo.html')
+    #Inicio Cambio
+    especialistas = DB_functions.obtener_doctores("")
+    especialistas_horarios = []
+    for especialista in especialistas:
+        # Obtener los horarios para cada especialista
+        horarios = DB_functions.obtener_horarios_especialistas(especialista['rut'])  # Usamos rut para obtener los horarios
+        especialistas_horarios.append({
+            'especialista': especialista,
+            'horarios': horarios
+        })
+
+    return render_template('administrativo.html', especialistas_horarios=especialistas_horarios)
 
 @app.route('/buscar_especialistas')
 def buscar_especialistas():
     # Lógica para buscar especialista
-    especialistas = DB_functions.obtener_doctores()
+    especialistas = DB_functions.obtener_doctores("")
     return render_template('buscar_especialistas.html', especialistas=especialistas)
 
 @app.route('/seleccionar_especialista')
 def seleccionar_especialista():
-    especialistas = DB_functions.obtener_doctores()
+    especialistas = DB_functions.obtener_doctores("")
     return render_template('seleccionar_especialista.html', especialistas=especialistas)
 
 @app.route('/<rutP>/paciente/seleccionar_especialista/agendar_hora/<rutE>')
@@ -95,7 +102,7 @@ def obtener_especialidades_ruta():
 @app.route('/obtener_doctores')
 def obtener_doctores_ruta():
     try:
-        doctores = DB_functions.obtener_doctores()  # Llama a la función desde DB_functions
+        doctores = DB_functions.obtener_doctores("")  # Llama a la función desde DB_functions
         return jsonify(doctores)
     except Exception as ex:
         print(ex)

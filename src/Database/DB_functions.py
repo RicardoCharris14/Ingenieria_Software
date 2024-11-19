@@ -28,11 +28,18 @@ def obtener_especialidades():
     finally:
         connection.close()
 
-def obtener_doctores():
+def obtener_doctores(rutE):
     try:
         connection = sqlite3.connect("./src/Database/bd")
         cursor = connection.cursor()
-        cursor.execute("SELECT rut, nombre, especialidad FROM Especialista")
+        instruction = "SELECT rut, nombre, especialidad FROM Especialista" \
+                      ""
+        parameters = []
+        if rutE:
+            instruction += "WHERE rut = ?"
+            parameters.append(rutE)
+
+        cursor.execute(instruction, parameters)
         doctores = [{'rut': row[0], 'nombre': row[1], 'especialidad': row[2]} for row in cursor.fetchall()]
         return doctores
     except Exception as ex:
@@ -158,7 +165,7 @@ def obtener_costo_atencion(rut_especialista):
     finally:
         connection.close()
 
-#Funcion nuevas
+
 def obtener_horarios_especialistas(rut_especialista):
     try:
         connection = sqlite3.connect("./src/Database/bd")
