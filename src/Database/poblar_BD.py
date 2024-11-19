@@ -86,10 +86,50 @@ try:
     ('Esencial');
 
     INSERT INTO Prevision_Especialista (nombre_prevision, rut_especialista) VALUES
+    -- Dr. Alejandro Pérez
     ('Colmena', '12345678-9'),
     ('Masvida', '12345678-9'),
-    ('Esencial', '12345678-9');
-    
+    ('Esencial', '12345678-9'),
+
+    -- Dra. Beatriz Gómez
+    ('Cruz blanca', '98765432-1'),
+    ('Masvida', '98765432-1'),
+
+    -- Dr. Carlos López
+    ('Banmédica', '11223344-5'),
+    ('Colmena', '11223344-5'),
+
+    -- Dra. Daniela Fernández
+    ('Esencial', '22334455-6'),
+    ('Masvida', '22334455-6'),
+    ('Colmena', '22334455-6'),
+
+    -- Dr. Eduardo Martínez
+    ('Banmédica', '33445566-7'),
+    ('Cruz blanca', '33445566-7'),
+
+    -- Dra. Francisca Torres
+    ('Esencial', '44556677-8'),
+    ('Colmena', '44556677-8'),
+
+    -- Dr. Gabriel Soto
+    ('Banmédica', '55667788-9'),
+    ('Masvida', '55667788-9'),
+    ('Esencial', '55667788-9'),
+
+    -- Dra. Helena Rojas
+    ('Colmena', '66778899-0'),
+    ('Cruz blanca', '66778899-0'),
+    ('Esencial', '66778899-0'),
+
+    -- Dr. Ignacio Vega
+    ('Masvida', '77889900-1'),
+    ('Banmédica', '77889900-1'),
+
+    -- Dra. Julia Ramírez
+    ('Esencial', '88990011-2'),
+    ('Colmena', '88990011-2'),
+    ('Banmédica', '88990011-2');
     COMMIT;
     """
 )
