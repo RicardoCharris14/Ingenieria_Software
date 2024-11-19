@@ -305,3 +305,55 @@ h1 {
     float: none;
   }
 }
+
+.medios-pago {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.medio-pago {
+  margin: 10px;
+  text-align: center;
+}
+
+.medio-pago .tarjeta {
+  width: 80px;
+  height: 50px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  background-color: #eee;
+  position: relative; /* Para posicionar los pseudo-elementos */
+}
+
+.debito .tarjeta {
+  background-image:
+    linear-gradient(to bottom, #f7d060, #f0ad4e); /* Gradiente para tarjeta de débito */
+}
+
+.credito .tarjeta {
+  background-image:
+    linear-gradient(to bottom, #5cb85c, #4cae4c); /* Gradiente para tarjeta de crédito */
+}
+
+.tarjeta::before { /* Pseudo-elemento para el chip */
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 15px;
+  height: 10px;
+  background-color: gold;
+  border-radius: 3px;
+}
+
+.tarjeta::after { /* Pseudo-elemento para las líneas */
+  content: "";
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  width: 60px;
+  height: 3px;
+  background-color: #ddd;
+}
