@@ -48,6 +48,27 @@ def obtener_doctores(rutE):
     finally:
         connection.close()
 
+
+def buscar_doctor(rut_especialista):
+    try:
+        connection = sqlite3.connect("./src/Database/bd")
+        cursor = connection.cursor()
+
+        cursor.execute("""SELECT rut, nombre, especialidad, valor_atencion FROM Especialista WHERE rut = ?""", (rut_especialista,))
+        
+        row = cursor.fetchone()
+        
+        if not row:
+            return None
+
+        doctor = {'rut': row[0],'nombre': row[1],'especialidad': row[2],'valor_atencion': row[3]}
+        return doctor
+    except Exception as ex:
+        print(f"Error al buscar el doctor: {ex}")
+        return None
+    finally:
+        connection.close()
+
 def obtener_horarios_disponibles(especialidad, primer_dia, ultimo_dia, hora, doctor):
     try:
         connection = sqlite3.connect("./src/Database/bd")
@@ -146,7 +167,6 @@ def bloquear_horario(id):
     finally:
         connection.close()
 
-
 #Modificar pues valor se movio a especialista
 def obtener_costo_atencion(rut_especialista):
     try:
@@ -191,3 +211,42 @@ def obtener_horarios_especialistas(rut_especialista):
 # * modificar obtener_costo_atencion
 # * crear metodo para cambiar parametros
 
+def obtener_previsiones_especialista(rut_especialista):
+    try:
+        connection = sqlite3.connect("./src/Database/bd")
+        cursor = connection.cursor()
+
+        # Consulta para obtener los especialistas y sus previsiones (adaptar a tu base de datos)
+        cursor.execute("""
+                SELECT E.nombre, P.nombre
+                FROM Especialista E
+                JOIN Prevision_Especialista PE ON E.rut = PE.rut_especialista
+                JOIN Prevision P ON PE.nombre_prevision = P.nombre
+            """)  # Reemplaza "Especialista" y "Prevision_Especialista" con los nombres de tus tablas si es necesario
+        especialistas_con_previsiones = cursor.fetchall()
+
+        return especialistas_con_previsiones
+    except Exception as ex:
+        print(ex)
+        return []
+    finally:
+        connection.close()
+
+
+
+
+def obtener_medios_pago():
+    try:
+        connection = sqlite3.connect("./src/Database/bd")
+        cursor = connection.cursor()
+
+        # Consulta para obtener los medios de pago (adaptar a tu base de datos)
+        cursor.execute("SELECT nombre FROM Medios_pago")  # Reemplaza "Medios_pago" con el nombre de tu tabla
+        medios_pago = [row[0] for row in cursor.fetchall()]
+
+        return medios_pago
+    except Exception as ex:
+        print(ex)
+        return []
+    finally:
+        connection.close()

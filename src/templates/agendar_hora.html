@@ -8,6 +8,13 @@
     <title>Agendar hora</title>
 </head>
 <body>
+        <!-- Información del especialista -->
+        <div id="info-especialista" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px;">
+            <h2>Información del Especialista</h2>
+            <p><strong>Nombre:</strong> {{ especialista['nombre'] }}</p>
+            <p><strong>Especialidad:</strong> {{ especialista['especialidad'] }}</p>
+            <p><strong>Costo de Atención:</strong> ${{ especialista['valor_atencion'] }}</p>
+        </div>
     <h1 id="titulo_calendario">Seleccione un horario</h1>
     <table>
         <thead>
