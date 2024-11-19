@@ -66,12 +66,15 @@ def agendar_hora(rutP, rutE):
     intervalo = DB_functions.obtener_periodo_temporal()
     horarios = DB_functions.obtener_horarios_disponibles("", intervalo[0]['fecha_inicio'], intervalo[0]['fecha_final'],"", rutE)
     especialista = DB_functions.buscar_doctor(rutE)
+    previsiones = DB_functions.obtener_previsiones_especialista(rutE)
+    print(previsiones)
+
     fechas = []
     for horario in horarios:
         if horario['fecha'] not in fechas:
             fechas.append(horario['fecha'])
     participantes = {'paciente': rutP, 'especialista': rutE}
-    return render_template('agendar_hora.html', participantes=participantes, horarios=horarios, fechas=fechas, especialista=especialista)
+    return render_template('agendar_hora.html', participantes=participantes, horarios=horarios, fechas=fechas, especialista=especialista, previsiones=previsiones)
 
 @app.route('/reservar_cita', methods=['POST'])
 def reservar():
@@ -148,11 +151,10 @@ def obtener_costo_atencion():
         print(ex)
         return jsonify({'error': 'Error al obtener el costo de atención'}), 500
 
-@app.route('/obtener_previsiones_especialista')
-def obtener_previsiones_especialista():
+@app.route('/obtener_previsiones')
+def obtener_previsiones():
     try:
-        rut_especialista = request.args.get('rut')
-        previsiones = DB_functions.obtener_previsiones_especialista(rut_especialista)
+        previsiones = DB_functions.obtener_previsiones()
         return jsonify(previsiones)
     except Exception as ex:
         print(ex)

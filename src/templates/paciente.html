@@ -32,12 +32,8 @@
 
     <div class="menu-superpuesto" id="previsiones">
     <button class="close-button" onclick="cerrarPrevisiones()">&times;</button>
-    <h3>Previsiones por Especialista</h3>
-    <select id="especialistaPrevision">
-        {% for especialista in especialistas %}
-        <option value="{{ especialista.rut }}">{{ especialista.nombre }}</option>
-        {% endfor %}
-    </select>
+    <h3>Previsiones</h3>
+    <div id="especialistaPrevision"></div>
     <div id="listaPrevisiones"></div>
 </div>
 
@@ -73,7 +69,7 @@
 
   var rutEspecialista = document.getElementById("especialistaPrevision").value;
 
-  fetch(`/obtener_previsiones_especialista?rut=${rutEspecialista}`)
+  fetch('/obtener_previsiones')
     .then(response => response.json())
     .then(previsiones => {
       var listaPrevisionesDiv = document.getElementById("listaPrevisiones");

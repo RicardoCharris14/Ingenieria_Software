@@ -78,6 +78,18 @@ try:
 
     INSERT INTO Parametro (id, fecha_inicio, fecha_final) VALUES (1, '2024-11-18', '2024-11-24');
 
+    INSERT INTO Prevision (nombre) VALUES
+    ('Colmena'),
+    ('Cruz blanca'),
+    ('Masvida'),
+    ('Banmédica'),
+    ('Esencial');
+
+    INSERT INTO Prevision_Especialista (nombre_prevision, rut_especialista) VALUES
+    ('Colmena', '12345678-9'),
+    ('Masvida', '12345678-9'),
+    ('Esencial', '12345678-9');
+    
     COMMIT;
     """
 )

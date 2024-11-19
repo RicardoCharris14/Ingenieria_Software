@@ -20,11 +20,11 @@ th {
     background-color: #f2f2f2;
     color: #333;
 }
-ul {
+.l_horas_atencion {
     list-style-type: none;
     padding: 0;
 }
-li {
+.horas_atencion {
     padding: 10px;
     margin: 5px 0;
     cursor: pointer;

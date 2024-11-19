@@ -216,14 +216,18 @@ def obtener_previsiones_especialista(rut_especialista):
         connection = sqlite3.connect("./src/Database/bd")
         cursor = connection.cursor()
 
-        # Consulta para obtener los especialistas y sus previsiones (adaptar a tu base de datos)
-        cursor.execute("""
-                SELECT E.nombre, P.nombre
+        query = """
+                SELECT E.nombre, PE.nombre_prevision
                 FROM Especialista E
                 JOIN Prevision_Especialista PE ON E.rut = PE.rut_especialista
-                JOIN Prevision P ON PE.nombre_prevision = P.nombre
-            """)  # Reemplaza "Especialista" y "Prevision_Especialista" con los nombres de tus tablas si es necesario
-        especialistas_con_previsiones = cursor.fetchall()
+                """
+        params = []
+        if rut_especialista:
+            query += " WHERE E.rut = ?"
+            params.append(rut_especialista)
+
+        cursor.execute(query, params)  
+        especialistas_con_previsiones = [{'especialista': row[0], 'prevision': row[1]} for row in cursor.fetchall()] 
 
         return especialistas_con_previsiones
     except Exception as ex:
@@ -232,19 +236,18 @@ def obtener_previsiones_especialista(rut_especialista):
     finally:
         connection.close()
 
-
-
-
-def obtener_medios_pago():
+def obtener_previsiones():
     try:
         connection = sqlite3.connect("./src/Database/bd")
         cursor = connection.cursor()
 
-        # Consulta para obtener los medios de pago (adaptar a tu base de datos)
-        cursor.execute("SELECT nombre FROM Medios_pago")  # Reemplaza "Medios_pago" con el nombre de tu tabla
-        medios_pago = [row[0] for row in cursor.fetchall()]
+        cursor.execute("""
+                SELECT nombre FROM Prevision
+            """) 
+        previsiones = cursor.fetchall()
 
-        return medios_pago
+        return previsiones
+    
     except Exception as ex:
         print(ex)
         return []
