@@ -55,7 +55,16 @@
 <div class="menu-superpuesto" id="pagos">
     <button class="close-button" onclick="cerrarMediosPago()" >&times;</button>
     <h2>Medios de Pago</h2>
-    <div id="menuPagos"></div>
+    <div class="medios-pago">
+        <div class="medio-pago debito">
+            <div class="tarjeta"></div>
+            <p>Tarjeta de Débito</p>
+        </div>
+        <div class="medio-pago credito">
+            <div class="tarjeta"></div>
+            <p>Tarjeta de Crédito</p>
+        </div>
+    </div>
 </div>
 
     <script>
@@ -99,28 +108,6 @@ function cerrarPrevisiones() {
     }
     function mostrarMediosPago() {
   document.getElementById("pagos").style.display = "block";
-
-  // Realizar la solicitud al servidor para obtener los medios de pago
-  fetch('/obtener_medios_pago')
-    .then(response => response.json())
-    .then(mediosPago => {
-      // Mostrar los medios de pago en el div "menuPagos"
-      var menuPagosDiv = document.getElementById("menuPagos");
-      menuPagosDiv.innerHTML = ""; // Limpiar el contenido anterior
-
-      if (mediosPago.length > 0) {
-        var lista = document.createElement("ul");
-        mediosPago.forEach(medioPago => {
-          var elemento = document.createElement("li");
-          elemento.textContent = medioPago;
-          lista.appendChild(elemento);
-        });
-        menuPagosDiv.appendChild(lista);
-      } else {
-        menuPagosDiv.innerHTML = "<p>No se encontraron medios de pago disponibles.</p>";
-      }
-    })
-    .catch(error => console.error('Error al obtener los medios de pago:', error));
 }
 
     function cerrarMediosPago() {
