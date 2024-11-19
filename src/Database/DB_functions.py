@@ -41,6 +41,27 @@ def obtener_doctores():
     finally:
         connection.close()
 
+
+def buscar_doctor(rut_especialista):
+    try:
+        connection = sqlite3.connect("./src/Database/bd")
+        cursor = connection.cursor()
+
+        cursor.execute("""SELECT rut, nombre, especialidad, valor_atencion FROM Especialista WHERE rut = ?""", (rut_especialista,))
+        
+        row = cursor.fetchone()
+        
+        if not row:
+            return None
+
+        doctor = {'rut': row[0],'nombre': row[1],'especialidad': row[2],'valor_atencion': row[3]}
+        return doctor
+    except Exception as ex:
+        print(f"Error al buscar el doctor: {ex}")
+        return None
+    finally:
+        connection.close()
+
 def obtener_horarios_disponibles(especialidad, primer_dia, ultimo_dia, hora, doctor):
     try:
         connection = sqlite3.connect("./src/Database/bd")
@@ -138,7 +159,6 @@ def bloquear_horario(id):
         print(ex)
     finally:
         connection.close()
-
 
 #Modificar pues valor se movio a especialista
 def obtener_costo_atencion(rut_especialista):
