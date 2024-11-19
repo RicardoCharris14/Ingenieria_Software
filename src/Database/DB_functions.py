@@ -184,3 +184,42 @@ def obtener_horarios_especialistas(rut_especialista):
 # * modificar obtener_costo_atencion
 # * crear metodo para cambiar parametros
 
+def obtener_previsiones_especialista(rut_especialista):
+    try:
+        connection = sqlite3.connect("./src/Database/bd")
+        cursor = connection.cursor()
+
+        # Consulta para obtener los especialistas y sus previsiones (adaptar a tu base de datos)
+        cursor.execute("""
+                SELECT E.nombre, P.nombre
+                FROM Especialista E
+                JOIN Prevision_Especialista PE ON E.rut = PE.rut_especialista
+                JOIN Prevision P ON PE.nombre_prevision = P.nombre
+            """)  # Reemplaza "Especialista" y "Prevision_Especialista" con los nombres de tus tablas si es necesario
+        especialistas_con_previsiones = cursor.fetchall()
+
+        return especialistas_con_previsiones
+    except Exception as ex:
+        print(ex)
+        return []
+    finally:
+        connection.close()
+
+
+
+
+def obtener_medios_pago():
+    try:
+        connection = sqlite3.connect("./src/Database/bd")
+        cursor = connection.cursor()
+
+        # Consulta para obtener los medios de pago (adaptar a tu base de datos)
+        cursor.execute("SELECT nombre FROM Medios_pago")  # Reemplaza "Medios_pago" con el nombre de tu tabla
+        medios_pago = [row[0] for row in cursor.fetchall()]
+
+        return medios_pago
+    except Exception as ex:
+        print(ex)
+        return []
+    finally:
+        connection.close()

@@ -140,5 +140,25 @@ def obtener_costo_atencion():
         print(ex)
         return jsonify({'error': 'Error al obtener el costo de atención'}), 500
 
+@app.route('/obtener_previsiones_especialista')
+def obtener_previsiones_especialista():
+    try:
+        rut_especialista = request.args.get('rut')
+        previsiones = DB_functions.obtener_previsiones_especialista(rut_especialista)
+        return jsonify(previsiones)
+    except Exception as ex:
+        print(ex)
+        return jsonify({'error': 'Error al obtener las previsiones'}), 500
+
+@app.route('/obtener_medios_pago')
+def obtener_medios_pago():
+    try:
+        medios_pago = DB_functions.obtener_medios_pago()
+        return jsonify(medios_pago)
+    except Exception as ex:
+        print(ex)
+        return jsonify({'error': 'Error al obtener los medios de pago'}), 500
+
+
 if __name__ == "__main__":
     app.run(debug=True)
