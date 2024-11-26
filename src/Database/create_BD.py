@@ -10,6 +10,7 @@ try:
         CREATE TABLE Paciente(
             rut TEXT PRIMARY KEY,
             nombre TEXT NOT NULL,
+            contraseña TEXT,
             fecha_nacimiento TEXT NOT NULL,
             telefono TEXT NOT NULL,
             correo TEXT NOT NULL
@@ -18,6 +19,7 @@ try:
         CREATE TABLE Especialista(
             rut TEXT PRIMARY KEY,
             nombre TEXT NOT NULL,
+            contraseña TEXT,
             especialidad TEXT NOT NULL,
             valor_atencion INTEGER NOT NULL,
             telefono TEXT NOT NULL,
