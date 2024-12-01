@@ -60,6 +60,7 @@ try:
                          
         CREATE TABLE Parametro (
             id NUMBER PRIMARY KEY,
+            contraseña_admin TEXT NOT NULL,
             fecha_inicio TEXT NOT NULL,
             fecha_final TEXT NOT NULL
         );
