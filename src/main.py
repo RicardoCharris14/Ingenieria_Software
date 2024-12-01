@@ -1,10 +1,11 @@
-from flask import Flask, jsonify, request, render_template
+from flask import Flask, jsonify, request, render_template, redirect, url_for, flash
 
 from Database import DB_functions
 
 
 
 app = Flask(__name__)
+app.secret_key = 'IngSoftware'
 
 @app.route('/')
 def index():
@@ -35,8 +36,27 @@ def ver_horarios(rut_especialista):
         return jsonify({'error': 'No se pudieron obtener los horarios'}), 500
     return render_template('ver_horarios.html', horarios=horarios)
 
+@app.route('/logAdmin')
+def logAdmin():
+    return render_template('logAdmin.html')
+
+@app.route('/admin_login', methods=['POST'])
+def admin_login():
+    admin_password = DB_functions.get_admin_password()
+    password = request.form.get('password')
+    if password == admin_password:
+        flash('Inicio de sesion exitoso', 'success')
+        return redirect(url_for('administrativo'))
+    else:
+        flash('Contraseña incorrecta', 'danger')
+        return redirect(url_for('logAdmin'))
+
 @app.route('/administrativo')
 def administrativo():
+    return render_template('administradores.html')
+
+@app.route('/administrativo/gestionar_especialistas')
+def gestionar_especialistas():
     #Inicio Cambio
     especialistas = DB_functions.obtener_doctores("")
     especialistas_horarios = []

@@ -1,0 +1,54 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f4f4f4;
+}
+.container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+h1 {
+    margin-bottom: 20px;
+}
+input[type="password"] {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.button-container {
+    display: flex;
+    justify-content: space-between;
+}
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    margin-top: 10px; /* Añadir margen superior para separar los botones del campo de entrada */
+}
+button:hover {
+    background-color: #45a049;
+}
+.flash {
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 4px;
+    color: white;
+}
+.flash.success {
+    background-color: #4CAF50;
+}
+.flash.danger {
+    background-color: #f44336;
+}

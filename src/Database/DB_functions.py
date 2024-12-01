@@ -255,3 +255,25 @@ def obtener_previsiones():
         return []
     finally:
         connection.close()
+
+def get_admin_password():
+    try:
+        connection = sqlite3.connect("./src/Database/bd")
+        cursor = connection.cursor()
+
+        cursor.execute(
+            """
+            SELECT contraseña_admin FROM Parametro
+            """
+        )
+
+        password = cursor.fetchall()
+        password = password[0][0]
+        return password
+    
+    except Exception as ex:
+        print(ex)
+        return []
+    finally:
+        connection.close()
+
