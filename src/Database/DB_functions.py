@@ -241,9 +241,11 @@ def obtener_previsiones():
         connection = sqlite3.connect("./src/Database/bd")
         cursor = connection.cursor()
 
-        cursor.execute("""
-                SELECT nombre FROM Prevision
-            """) 
+        cursor.execute(
+            """
+            SELECT nombre FROM Prevision
+            """
+        ) 
         previsiones = cursor.fetchall()
 
         return previsiones

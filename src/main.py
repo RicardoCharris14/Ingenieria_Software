@@ -48,7 +48,11 @@ def administrativo():
             'horarios': horarios
         })
 
-    return render_template('administrativo.html', especialistas_horarios=especialistas_horarios)
+    return render_template('gestionar_especialistas.html', especialistas_horarios=especialistas_horarios)
+
+@app.route('/administrativo/configuraciones')
+def configuraciones():
+    return
 
 @app.route('/buscar_especialistas')
 def buscar_especialistas():
