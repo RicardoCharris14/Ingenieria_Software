@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Especialista</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/gestionar_horarios.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Información del Especialista</h1>
+        <p><strong>Nombre:</strong> {{ especialista['nombre'] }}</p>
+        <p><strong>Especialidad:</strong> {{ especialista['especialidad'] }}</p>
+        <h2>Citas Agendadas</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre del Paciente</th>
+                    <th>RUT del Paciente</th>
+                    <th>Fecha</th>
+                    <th>Hora de Inicio</th>
+                    <th>Hora de Fin</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cita in citas %}
+                <tr>
+                    <td>{{ cita.nombre_paciente }}</td>
+                    <td>{{ cita.rut_paciente }}</td>
+                    <td>{{ cita.fecha }}</td>
+                    <td>{{ cita.hora_inicio }}</td>
+                    <td>{{ cita.hora_fin }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, render_template, redirect, url_for, flash
+from flask import Flask, jsonify, request, render_template, redirect, url_for, flash, session
 
 from Database import DB_functions
 
@@ -69,6 +69,19 @@ def gestionar_especialistas():
         })
 
     return render_template('gestionar_especialistas.html', especialistas_horarios=especialistas_horarios)
+
+@app.route('/administrativo/gestionar_horarios')
+def gestionar_horarios():
+    rut_especialista = session.get('rut_especialista')
+    especialista = DB_functions.buscar_doctor(rut_especialista)
+    citas = DB_functions.obtener_citas_especialista(rut_especialista)
+    return render_template('gestionar_horarios.html', especialista=especialista, citas=citas)
+
+@app.route('/administrativo/gestionar_horarios', methods=['POST'])
+def post_gestionar_horarios():
+    rut_especialista = request.form.get('rut_especialista')
+    session['rut_especialista'] = rut_especialista
+    return redirect(url_for('gestionar_horarios'))
 
 @app.route('/administrativo/configuraciones')
 def configuraciones():

@@ -208,8 +208,29 @@ def obtener_horarios_especialistas(rut_especialista):
     finally:
         connection.close()
 
+def obtener_citas_especialista(rut_especialista):
+    try:
+        connection = sqlite3.connect("./src/Database/bd")
+        cursor = connection.cursor()
+
+        query = """
+        SELECT P.nombre AS paciente_nombre, P.rut AS paciente_rut, C.id_horario, H.fecha, H.hora_inicio, H.hora_fin
+        FROM Cita C
+        JOIN Paciente P ON C.rut_paciente = P.rut
+        JOIN Horario_Atencion H ON C.id_horario = H.id
+        WHERE C.rut_especialista = ?
+        """
+        cursor.execute(query, (rut_especialista,))
+        citas = cursor.fetchall()
+
+        return [{'nombre_paciente': row[0], 'rut_paciente': row[1], 'fecha': row[3], 'hora_inicio': row[4], 'hora_fin': row[5]} for row in citas]
+    except Exception as ex:
+        print(ex)
+        return []
+    finally:
+        connection.close()
+
 # * modificar obtener_costo_atencion
-# * crear metodo para cambiar parametros
 
 def obtener_previsiones_especialista(rut_especialista):
     try:
