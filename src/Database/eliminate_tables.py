@@ -15,6 +15,7 @@ try:
         DROP TABLE IF EXISTS Especialista;
         DROP TABLE IF EXISTS Paciente;
         DROP TABLE IF EXISTS Parametro;
+        DROP TABLE IF EXISTS Recordatorios;
 
         COMMIT;
         """

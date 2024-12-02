@@ -1,5 +1,69 @@
 import sqlite3
-from datetime import datetime
+from datetime import datetime, timedelta
+
+
+def obtener_recordatorios():
+    try:
+        connection = sqlite3.connect("./src/Database/bd")
+        cursor = connection.cursor()
+
+        query = """
+        SELECT id, numero_paciente, mensaje, tiempo_envio 
+        FROM Recordatorios
+        """
+        cursor.execute(query)
+        recordatorios = cursor.fetchall()
+
+        return recordatorios
+
+    except Exception as ex:
+        print(f"Error al obtener recordatorios: {ex}")
+        return []
+    finally:
+        connection.close()
+
+def obtener_horario(id_horario):
+    try:
+        connection = sqlite3.connect("./src/Database/bd")
+        cursor = connection.cursor()
+
+        query = """
+        SELECT id, fecha, hora_inicio, hora_fin, rut_especialista
+        FROM Horario_Atencion
+        WHERE id = ?
+        """
+        cursor.execute(query, (id_horario,))
+        horario = cursor.fetchone()
+
+        if horario:
+            return horario
+        return None 
+    except Exception as ex:
+        print(f"Error al obtener el horario: {ex}")
+        return None
+    finally:
+        connection.close()
+
+def guardar_recordatorio(id_cita, numero_paciente, mensaje, tiempo_envio):
+    try:
+        connection = sqlite3.connect("./src/Database/bd")
+        cursor = connection.cursor()
+   
+        cursor.execute(
+            """
+            INSERT INTO recordatorios (id, numero_paciente, mensaje, tiempo_envio) VALUES (?, ?, ?, ?)
+            """, (id_cita, numero_paciente, mensaje, tiempo_envio)
+        )
+        connection.commit()
+
+        if cursor.rowcount == 0:
+            return 0
+        else:
+            return 1
+    except Exception as ex:
+        print(ex)
+    finally:
+        connection.close()
 
 
 def modificar_disponibilidad_horario(id_horario, disponibilidad):

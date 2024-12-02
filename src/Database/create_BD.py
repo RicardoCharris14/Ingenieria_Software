@@ -64,6 +64,13 @@ try:
             fecha_inicio TEXT NOT NULL,
             fecha_final TEXT NOT NULL
         );
+
+        CREATE TABLE Recordatorios (
+        id INT PRIMARY KEY,
+        numero_paciente TEXT,
+        mensaje TEXT,
+        tiempo_envio DATETIME
+    );
                          
         COMMIT;
     """)
