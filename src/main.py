@@ -75,13 +75,24 @@ def gestionar_horarios():
     rut_especialista = session.get('rut_especialista')
     especialista = DB_functions.buscar_doctor(rut_especialista)
     citas = DB_functions.obtener_citas_especialista(rut_especialista)
-    return render_template('gestionar_horarios.html', especialista=especialista, citas=citas)
+    horarios = DB_functions.obtener_horarios_especialistas(rut_especialista)
+    return render_template('gestionar_horarios.html', especialista=especialista, citas=citas, horarios=horarios)
 
 @app.route('/administrativo/gestionar_horarios', methods=['POST'])
 def post_gestionar_horarios():
     rut_especialista = request.form.get('rut_especialista')
     session['rut_especialista'] = rut_especialista
     return redirect(url_for('gestionar_horarios'))
+
+@app.route('/eliminar_horario/<int:id>', methods=['DELETE'])
+def eliminar_horario(id):
+    try:
+        DB_functions.eliminar_horario(id)
+        return jsonify({'success': True})
+    except Exception as ex:
+        print(ex)
+        return jsonify({'success': False, 'error': str(ex)})
+
 
 @app.route('/administrativo/configuraciones')
 def configuraciones():

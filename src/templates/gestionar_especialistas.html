@@ -9,8 +9,8 @@
 <body>
     <div class="container">
         <div class="header">
+            <button class="volver-btn" onclick="location.href='{{ url_for('administrativo') }}'">Volver</button>
             <h1>Gestionar Especialistas</h1>
-            <button class="volver-btn" onclick="location.href='{{ url_for('administrativo') }}'">Volver a Administradores</button>
         </div>
         <table>
             <thead>
@@ -50,10 +50,10 @@
                                     <tbody>
                                         {% for horario in item.horarios %}
                                             <tr>
-                                                <td>{{ horario[1] }}</td> <!-- Fecha -->
-                                                <td>{{ horario[2] }}</td> <!-- Hora de inicio -->
-                                                <td>{{ horario[3] }}</td> <!-- Hora de fin -->
-                                                <td>{{ 'Disponible' if horario[4] else 'Reservado' }}</td>
+                                                <td>{{ horario.fecha }}</td> 
+                                                <td>{{ horario.hora_inicio }}</td> 
+                                                <td>{{ horario.hora_fin }}</td> 
+                                                <td>{{ 'Disponible' if horario.disponible else 'Reservado' }}</td>
                                             </tr>
                                         {% endfor %}
                                     </tbody>

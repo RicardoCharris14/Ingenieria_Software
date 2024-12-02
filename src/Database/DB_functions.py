@@ -1,4 +1,5 @@
 import sqlite3
+from datetime import datetime
 
 
 def modificar_disponibilidad_horario(id_horario, disponibilidad):
@@ -100,7 +101,7 @@ def obtener_horarios_disponibles(especialidad, primer_dia, ultimo_dia, hora, doc
         query += " ORDER BY H.fecha ASC"
 
         cursor.execute(query, tuple(params))
-        horarios = [{'especialista': row[0], 'fecha': row[1], 'hora_inicio': row[2], 'hora_fin': row[3], 'id':row[4]} for row in cursor.fetchall()]
+        horarios = [{'especialista': row[0], 'fecha': datetime.strptime(row[1], '%Y-%m-%d').strftime('%d-%m-%Y'), 'hora_inicio': row[2], 'hora_fin': row[3], 'id':row[4]} for row in cursor.fetchall()]
         return horarios
     except Exception as ex:
         print(ex)
@@ -118,7 +119,7 @@ def obtener_periodo_temporal():
             SELECT fecha_inicio, fecha_final FROM Parametro
             """
         )
-        parametros = [{'fecha_inicio': row[0], 'fecha_final': row[1]} for row in cursor.fetchall()]
+        parametros = [{'fecha_inicio': datetime.strptime(row[0], '%Y-%m-%d').strftime('%d-%m-%Y'), 'fecha_final': datetime.strptime(row[1], '%Y-%m-%d').strftime('%d-%m-%Y')} for row in cursor.fetchall()]
         return parametros
     except Exception as ex:
         print(ex)
@@ -192,7 +193,7 @@ def obtener_horarios_especialistas(rut_especialista):
         cursor = connection.cursor()
         
         query = """
-        SELECT e.nombre AS especialista, h.fecha, h.hora_inicio, h.hora_fin, h.disponible
+        SELECT h.id, e.nombre AS especialista, h.fecha, h.hora_inicio, h.hora_fin, h.disponible
         FROM Especialista e
         INNER JOIN Horario_Atencion h ON e.rut = h.rut_especialista
         WHERE e.rut = ?
@@ -200,11 +201,25 @@ def obtener_horarios_especialistas(rut_especialista):
         cursor.execute(query, (rut_especialista,))
         horarios = cursor.fetchall()
 
+        horarios = [{'id': horario[0], 'fecha': datetime.strptime(horario[2], '%Y-%m-%d').strftime('%d-%m-%Y'), 'hora_inicio': horario[3], 'hora_fin': horario[4], 'disponible': horario[5]} for horario in horarios]
+
         connection.close()
         return horarios
     except Exception as ex:
         print(ex)
-        return None  #Devuelve O, un valor por defecto en caso de error
+        return []
+    finally:
+        connection.close()
+
+def eliminar_horario(id):
+    try:
+        connection = sqlite3.connect("./src/Database/bd")
+        cursor = connection.cursor()
+
+        cursor.execute("DELETE FROM Horario_Atencion WHERE id = ?", (id,))
+        connection.commit()
+    except Exception as ex:
+        print(ex)
     finally:
         connection.close()
 
@@ -223,7 +238,7 @@ def obtener_citas_especialista(rut_especialista):
         cursor.execute(query, (rut_especialista,))
         citas = cursor.fetchall()
 
-        return [{'nombre_paciente': row[0], 'rut_paciente': row[1], 'fecha': row[3], 'hora_inicio': row[4], 'hora_fin': row[5]} for row in citas]
+        return [{'nombre_paciente': row[0], 'rut_paciente': row[1], 'fecha': datetime.strptime(row[3], '%Y-%m-%d').strftime('%d-%m-%Y') , 'hora_inicio': row[4], 'hora_fin': row[5]} for row in citas]
     except Exception as ex:
         print(ex)
         return []

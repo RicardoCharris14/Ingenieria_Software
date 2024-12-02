@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Especialista</title>
+    <script src="{{ url_for('static', filename='js/gestionar_horarios.js') }}" type="text/javascript"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/gestionar_horarios.css') }}">
 </head>
 <body>
     <div class="container">
+        <button class="volver-btn" onclick="location.href='{{ url_for('gestionar_especialistas') }}'">Volver</button>
         <h1>Información del Especialista</h1>
         <p><strong>Nombre:</strong> {{ especialista['nombre'] }}</p>
         <p><strong>Especialidad:</strong> {{ especialista['especialidad'] }}</p>
@@ -34,6 +36,28 @@
                 {% endfor %}
             </tbody>
         </table>
+        <h2>Horarios del Especialista</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Hora de Inicio</th>
+                    <th>Hora de Fin</th>
+                    <th>Disponibilidad</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for horario in horarios %}
+                <tr data-id="{{ horario.id }}" data-disponible="{{ horario.disponible }}" onclick="selectRow(this)">
+                    <td>{{ horario.fecha }}</td>
+                    <td>{{ horario.hora_inicio }}</td>
+                    <td>{{ horario.hora_fin }}</td>
+                    <td>{{ 'Disponible' if horario.disponible else 'Reservado' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button onclick="eliminarHorario()">Eliminar Horario Seleccionado</button>
     </div>
 </body>
 </html>
