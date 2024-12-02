@@ -197,6 +197,7 @@ def obtener_horarios_especialistas(rut_especialista):
         FROM Especialista e
         INNER JOIN Horario_Atencion h ON e.rut = h.rut_especialista
         WHERE e.rut = ?
+        ORDER BY h.fecha ASC, h.hora_inicio ASC
         """
         cursor.execute(query, (rut_especialista,))
         horarios = cursor.fetchall()
@@ -208,6 +209,23 @@ def obtener_horarios_especialistas(rut_especialista):
     except Exception as ex:
         print(ex)
         return []
+    finally:
+        connection.close()
+
+def agregar_horario(rut_especialista, fecha, hora_inicio, hora_fin):
+    try:
+        connection = sqlite3.connect("./src/Database/bd")
+        cursor = connection.cursor()
+
+        cursor.execute("""
+            INSERT INTO Horario_Atencion (fecha, hora_inicio, hora_fin, rut_especialista, disponible)
+            VALUES (?, ?, ?, ?, 1)
+        """, (fecha, hora_inicio, hora_fin, rut_especialista))
+
+        connection.commit()
+    except Exception as ex:
+        print(ex)
+        raise ex
     finally:
         connection.close()
 
@@ -234,6 +252,7 @@ def obtener_citas_especialista(rut_especialista):
         JOIN Paciente P ON C.rut_paciente = P.rut
         JOIN Horario_Atencion H ON C.id_horario = H.id
         WHERE C.rut_especialista = ?
+        ORDER BY H.fecha ASC, h.hora_inicio ASC
         """
         cursor.execute(query, (rut_especialista,))
         citas = cursor.fetchall()

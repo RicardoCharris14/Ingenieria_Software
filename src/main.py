@@ -84,6 +84,22 @@ def post_gestionar_horarios():
     session['rut_especialista'] = rut_especialista
     return redirect(url_for('gestionar_horarios'))
 
+@app.route('/agregar_horario', methods=['POST'])
+def agregar_horario():
+    rut_especialista = request.form.get('rut_especialista')
+    fecha = request.form.get('fecha')
+    hora_inicio = request.form.get('hora_inicio')
+    hora_fin = request.form.get('hora_fin')
+
+    try:
+        DB_functions.agregar_horario(rut_especialista, fecha, hora_inicio, hora_fin)
+        flash('Horario agregado exitosamente', 'success')
+    except Exception as ex:
+        print(ex)
+        flash('Error al agregar el horario', 'danger')
+
+    return redirect(url_for('gestionar_horarios'))
+
 @app.route('/eliminar_horario/<int:id>', methods=['DELETE'])
 def eliminar_horario(id):
     try:
