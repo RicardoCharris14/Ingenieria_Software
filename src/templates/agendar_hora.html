@@ -8,49 +8,50 @@
     <title>Agendar hora</title>
 </head>
 <body>
+    <button class="volver-btn" onclick="location.href='{{ url_for('seleccionar_especialista') }}'">Volver</button>
+    <div class="container">
         <!-- Información del especialista -->
-        <div id="info-especialista" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px;">
+        <div id="info-especialista">
             <h2>Información del Especialista</h2>
             <p><strong>Nombre:</strong> {{ especialista['nombre'] }}</p>
             <p><strong>Especialidad:</strong> {{ especialista['especialidad'] }}</p>
             <p><strong>Costo de Atención:</strong> ${{ especialista['valor_atencion'] }}</p>
             {% if previsiones %}
             <p><strong>Previsiones:</strong></p>
-            {% for prevision in previsiones %}
             <ul>
+                {% for prevision in previsiones %}
                 <li>{{prevision.prevision}}</li>
+                {% endfor %}
             </ul>
-            {% endfor %}
             {% endif %}
-
         </div>
-    <h1 id="titulo_calendario">Seleccione un horario</h1>
-    <table>
-        <thead>
-            <tr>
-                {% for fecha in fechas %}
-                <th>{{fecha}}</th>
-                {% endfor %}
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                {% for fecha in fechas %}
-                <td>
-                    <ul class="l_horas_atencion">
-                        {% for horario in horarios %}
-                        {% if horario.fecha == fecha %}
-                        <li class="horas_atencion" data-id="{{horario.id}}">{{horario.hora_inicio}} - {{horario.hora_fin}}</li>
-                        {% endif %}
-                        {% endfor %}
-                    </ul>
-                </td>
-                {% endfor %}
-            </tr>
-        </tbody>
-    </table>
-    <button id="reservarBtn">Reservar</button>
-
+        <h1 id="titulo_calendario">Seleccione un horario</h1>
+        <table>
+            <thead>
+                <tr>
+                    {% for fecha in fechas %}
+                    <th>{{fecha}}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    {% for fecha in fechas %}
+                    <td>
+                        <ul class="l_horas_atencion">
+                            {% for horario in horarios %}
+                            {% if horario.fecha == fecha %}
+                            <li class="horas_atencion" data-id="{{horario.id}}">{{horario.hora_inicio}} - {{horario.hora_fin}}</li>
+                            {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    {% endfor %}
+                </tr>
+            </tbody>
+        </table>
+        <button id="reservarBtn">Reservar</button>
+    </div>
     <script>
         const participantes = {{ participantes | tojson }};
     </script>
