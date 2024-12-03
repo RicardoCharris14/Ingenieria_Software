@@ -5,10 +5,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página del Doctor</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        /* Botón de notificaciones */
+        #btnNotificaciones {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        /* Ventana emergente */
+        #ventanaNotificaciones {
+            display: none;
+            position: absolute;
+            top: 60px;
+            right: 20px;
+            width: 300px;
+            height: 400px;
+            background-color: white;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            z-index: 1000;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        #ventanaNotificaciones h2 {
+            margin-top: 0;
+        }
+
+        /* Estilo de las notificaciones */
+        .notificacion {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .notificacion:last-child {
+            border-bottom: none;
+        }
+    </style>
+    <script>
+        // Manejo de la ventana de notificaciones
+        function toggleNotificaciones() {
+            const ventana = document.getElementById('ventanaNotificaciones');
+            if (ventana.style.display === 'none') {
+                ventana.style.display = 'block'; // Mostrar ventana
+            } else {
+                ventana.style.display = 'none'; // Ocultar ventana
+            }
+        }
+    </script>
 </head>
 <body>
-    <h1>Especialistas y sus Horarios</h1>
-    
+    <h1 style="display: inline-block;">Especialistas y sus Horarios</h1>
+
+    <!-- Botón de Notificaciones -->
+    <button id="btnNotificaciones" onclick="toggleNotificaciones()">Notificaciones</button>
+
+    <!-- Ventana Emergente de Notificaciones -->
+    <div id="ventanaNotificaciones">
+        <h2>Notificaciones</h2>
+        {% if logs %}
+            {% for log in logs %}
+                <div class="notificacion">{{ log['mensaje'] }}</div>
+            {% endfor %}
+        {% else %}
+            <p>No hay notificaciones.</p>
+        {% endif %}
+    </div>
+
     <table id="tablaEspecialistas">
         <thead>
             <tr>

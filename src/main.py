@@ -31,6 +31,18 @@ from Database import DB_functions
 #     else:
 #         return False
 
+def registrar_log_sesion(rut_especialista, mensaje):
+    if 'logs' not in session:
+        session['logs'] = []
+    session['logs'].append({
+        'rut_especialista': rut_especialista,
+        'mensaje': mensaje,
+    })
+    session.modified = True
+    print(f"Log añadido para el especialista {rut_especialista}: {mensaje}")
+    print(f"Logs actuales en sesión: {session['logs']}")
+
+
 app = Flask(__name__)
 app.secret_key = 'IngSoftware'
 
@@ -101,6 +113,11 @@ def eliminar_cita(id_horario):
     try:
         DB_functions.eliminar_cita(id_horario)
         DB_functions.modificar_disponibilidad_horario(id_horario, '1')
+        horario = DB_functions.obtener_horario(id_horario)
+        id_horario, fecha, hora_inicio, hora_fin, rut_especialista = horario
+
+        mensaje_log = f"Cita con fecha {fecha} {hora_inicio} - {hora_fin} cancelada"
+        registrar_log_sesion(rut_especialista, mensaje_log)
         return jsonify({'success': True})
     except Exception as ex:
         print(ex)
@@ -110,14 +127,16 @@ def eliminar_cita(id_horario):
 @app.route('/<rutE>/doctor')
 def doctor(rutE):
     especialista = DB_functions.obtener_doctores(rutE)
-    horarios = DB_functions.obtener_horarios_especialistas(rutE)  # Usamos rut para obtener los horarios
+    horarios = DB_functions.obtener_horarios_especialistas(rutE)
+    logs = session.get('logs', [])
+    logs_doctor = [log for log in logs if log['rut_especialista'] == rutE] # Usamos rut para obtener los horarios
     especialista_horarios = {
         'especialista': especialista,
         'horarios': horarios
     }
     
     #Fin Cambio
-    return render_template('doctor.html', especialista_horarios=especialista_horarios)
+    return render_template('doctor.html', especialista_horarios=especialista_horarios ,logs=logs_doctor)
 
 @app.route('/logAdmin')
 def logAdmin():
@@ -291,6 +310,10 @@ def reservar():
             
             horario = DB_functions.obtener_horario(id)
             id_horario, fecha, hora_inicio, hora_fin, rut_especialista = horario
+
+            mensaje_log = f"Cita agregada con el paciente {rutP} para {fecha} {hora_inicio} - {hora_fin}"
+            registrar_log_sesion(rut_especialista, mensaje_log)
+
             numero_paciente = "+56984450039"
             mensaje = f"Hola, recuerde su cita con el especialista {rut_especialista} el día {fecha} a las {hora_inicio}."
             fecha_hora_envio = datetime.datetime.strptime(f"{fecha} {hora_inicio}", '%Y-%m-%d %H:%M') - datetime.timedelta(minutes=1)
