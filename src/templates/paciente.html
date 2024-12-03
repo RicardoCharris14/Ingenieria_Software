@@ -6,6 +6,12 @@
     <title>Página de Paciente</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/paciente.css') }}">
 </head>
+
+<form id="loginForm" action="/login" method="POST">
+    <label for="rut">RUT:</label>
+    <input type="text" id="rut" name="rut" placeholder="Ingrese su RUT" required>
+    <button type="submit">Iniciar Sesión</button>
+</form>
 <body>
     <div class="tab">
         <a href="#previsiones">
