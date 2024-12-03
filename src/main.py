@@ -278,6 +278,36 @@ def obtener_medios_pago():
         return jsonify({'error': 'Error al obtener los medios de pago'}), 500
 
 
+@app.route('/login', methods=['POST'])
+def login():
+    rut = request.form.get('rut')
+    if not rut:
+        flash('RUT no ingresado', 'danger')
+        return redirect(url_for('index'))
+
+    # Verificar si el RUT pertenece a un administrador
+    if DB_functions.is_admin(rut):
+        session['user_type'] = 'admin'
+        session['rut'] = rut
+        return redirect(url_for('administrativo'))
+
+    # Verificar si el RUT pertenece a un doctor
+    doctor = DB_functions.buscar_doctor(rut)
+    if doctor:
+        session['user_type'] = 'doctor'
+        session['rut'] = rut
+        return redirect(url_for('doctor', rutE=rut))
+
+    # Verificar si el RUT pertenece a un paciente
+    paciente = DB_functions.buscar_paciente(rut)
+    if paciente:
+        session['user_type'] = 'paciente'
+        session['rut'] = rut
+        return redirect(url_for('paciente'))
+
+    flash('RUT no registrado', 'danger')
+    return redirect(url_for('index'))
+
 if __name__ == "__main__":
     #inicializar_recordatorios()
     app.run(debug=False)
