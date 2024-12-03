@@ -138,6 +138,27 @@ def admin_login():
 def administrativo():
     return render_template('administradores.html')
 
+@app.route('/anadir_especialista', methods=['GET', 'POST'])
+def anadir_especialista():
+    if request.method == 'POST':
+        rut = request.form.get('rut')
+        nombre = request.form.get('nombre')
+        especialidad = request.form.get('especialidad')
+        valor_atencion = request.form.get('valor_atencion')
+        telefono = request.form.get('telefono')
+        correo = request.form.get('correo')
+        contraseña = request.form.get('contraseña')
+
+        try:
+            DB_functions.anadir_especialista(rut, nombre, contraseña, especialidad, valor_atencion, telefono, correo)
+            flash('Especialista añadido exitosamente', 'success')
+            return redirect(url_for('administrativo'))
+        except Exception as ex:
+            print(ex)
+            flash('Error al añadir el especialista', 'danger')
+            return render_template('anadir_especialista.html', rut=rut, nombre=nombre, especialidad=especialidad, valor_atencion=valor_atencion, telefono=telefono, correo=correo, contraseña=contraseña)
+    return render_template('anadir_especialista.html')
+
 @app.route('/administrativo/gestionar_especialistas')
 def gestionar_especialistas():
     #Inicio Cambio

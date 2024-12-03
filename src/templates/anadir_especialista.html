@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Añadir Especialista</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/anadir_especialista.css') }}">
+</head>
+<body>
+    <div class="container">
+        <button class="volver-btn" onclick="location.href='{{ url_for('administrativo') }}'">Volver</button>
+        <h1>Añadir Especialista</h1>
+        <form action="{{ url_for('anadir_especialista') }}" method="POST">
+            <label for="rut">RUT:</label>
+            <input type="text" id="rut" name="rut" required>
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required>
+            <label for="contraseña">Contraseña:</label>
+            <input type="password" id="contraseña" name="contraseña" required>
+            <label for="especialidad">Especialidad:</label>
+            <input type="text" id="especialidad" name="especialidad" required>
+            <label for="valor_atencion">Valor de Atención:</label>
+            <input type="number" id="valor_atencion" name="valor_atencion" required>
+            <label for="telefono">Teléfono:</label>
+            <input type="text" id="telefono" name="telefono" required>
+            <label for="correo">Correo:</label>
+            <input type="email" id="correo" name="correo" required>
+            <button type="submit">Añadir Especialista</button>
+        </form>
+    </div>
+</body>
+</html>

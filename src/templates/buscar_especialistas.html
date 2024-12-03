@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/buscar_especialistas.css') }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buscar Especialista</title>
 </head>
 <body>
+    <button class="volver-btn" onclick="location.href='{{ url_for('paciente') }}'">Volver</button>
     <h1>Buscar Especialista</h1>
     <input type="text" id="buscador" placeholder="Buscar por nombre o especialidad..." onkeyup="filtrarDoctores()">
 
@@ -35,7 +36,7 @@
             const filas = Array.from(tabla.rows).slice(1); // Excluye la cabecera
             filas.sort((a, b) => {
                 let valorA = a.cells[columna].innerText.toLowerCase();
-                let valorB = b.cells[columna].innerText.toLowerCase();
+                let valorB = b.cells[columna).innerText.toLowerCase();
 
                 if (tipo === 'disponibilidad') {
                     const estadoOrden = { "disponible": 1, "no disponible": 2 };
@@ -55,13 +56,10 @@
         function filtrarDoctores() {
             const buscador = document.getElementById("buscador").value.toLowerCase();
             const filas = document.querySelectorAll("#tablaEspecialistas tbody tr");
-
             filas.forEach(fila => {
-                const nombreDoctor = fila.cells[0].innerText.toLowerCase();
-                const especialidadDoctor = fila.cells[1].innerText.toLowerCase();
-
-                // Mostrar u ocultar la fila si coincide el nombre o la especialidad
-                if (nombreDoctor.includes(buscador) || especialidadDoctor.includes(buscador)) {
+                const nombre = fila.cells[0].innerText.toLowerCase();
+                const especialidad = fila.cells[1].innerText.toLowerCase();
+                if (nombre.includes(buscador) || especialidad.includes(buscador)) {
                     fila.style.display = "";
                 } else {
                     fila.style.display = "none";

@@ -64,7 +64,7 @@ try:
         ('2024-12-23', '15:00', '17:00', '88990011-2', 1),
         ('2024-12-25', '16:00', '18:00', '88990011-2', 1);
 
-    INSERT INTO Parametro (id, contraseña_admin, fecha_inicio, fecha_final) VALUES (1, 'admin', '2024-11-18', '2024-11-24');
+    INSERT INTO Parametro (id, contraseña_admin, fecha_inicio, fecha_final) VALUES (1, 'admin', '2024-12-18', '2024-12-25');
 
     INSERT INTO Prevision (nombre) VALUES
     ('Colmena'),
