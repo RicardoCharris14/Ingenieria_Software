@@ -46,8 +46,9 @@ def paciente():
 def citas_paciente():
     #rut_paciente = session.get('rut_paciente')
     rut_paciente = '11111111-1'
+    paciente = DB_functions.get_datos_paciente(rut_paciente)
     citas = DB_functions.get_citas_paciente(rut_paciente)
-    return render_template('citas_paciente.html', rut_paciente = rut_paciente, citas = citas)
+    return render_template('citas_paciente.html', rut_paciente = rut_paciente, citas = citas, paciente = paciente)
 
 # Rutas adicionales para otras secciones
 @app.route('/<rutE>/doctor')

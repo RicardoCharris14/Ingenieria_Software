@@ -419,3 +419,23 @@ def get_citas_paciente(rut_paciente):
         return []
     finally:
         connection.close()
+
+def get_datos_paciente(rut_paciente):
+    try:
+        connection = sqlite3.connect("./src/Database/bd")
+        cursor = connection.cursor()
+
+        query = """
+        SELECT P.rut, P.nombre, P.fecha_nacimiento, P.telefono, P.correo
+        FROM Paciente P
+        WHERE rut = ?
+        """
+        cursor.execute(query, (rut_paciente,))
+        citas = cursor.fetchone()
+
+        return {'rut': citas[0], 'nombre': citas[1], 'fecha_nacimiento': datetime.strptime(citas[2], '%Y-%m-%d').strftime('%d-%m-%Y') , 'telefono': citas[3], 'correo': citas[4]}
+    except Exception as ex:
+        print(ex)
+        return []
+    finally:
+        connection.close()

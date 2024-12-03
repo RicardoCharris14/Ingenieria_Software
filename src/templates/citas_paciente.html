@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Citas del Paciente</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/citas_paciente.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Información del Paciente</h1>
+        <p><strong>Nombre:</strong> {{ paciente.nombre }}</p>
+        <p><strong>RUT:</strong> {{ paciente.rut }}</p>
+        <p><strong>Fecha de Nacimiento:</strong> {{ paciente.fecha_nacimiento }}</p>
+        <p><strong>Teléfono:</strong> {{ paciente.telefono }}</p>
+        <p><strong>Correo:</strong> {{ paciente.correo }}</p>
+
+        <h2>Citas Agendadas</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Especialista</th>
+                    <th>Fecha</th>
+                    <th>Hora de Inicio</th>
+                    <th>Hora de Fin</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cita in citas %}
+                <tr>
+                    <td>{{ cita.nombre_especialista }}</td>
+                    <td>{{ cita.fecha }}</td>
+                    <td>{{ cita.hora_inicio }}</td>
+                    <td>{{ cita.hora_fin }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
