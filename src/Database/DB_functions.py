@@ -396,3 +396,26 @@ def get_admin_password():
     finally:
         connection.close()
 
+def get_citas_paciente(rut_paciente):
+    try:
+        connection = sqlite3.connect("./src/Database/bd")
+        cursor = connection.cursor()
+
+        query = """
+        SELECT P.nombre AS paciente_nombre, E.nombre, C.id_horario, H.fecha, H.hora_inicio, H.hora_fin
+        FROM Cita C
+        JOIN Paciente P ON C.rut_paciente = P.rut
+        JOIN Horario_Atencion H ON C.id_horario = H.id
+        JOIN Especialista E ON C.rut_especialista = E.rut
+        WHERE C.rut_paciente = ?
+        ORDER BY H.fecha ASC, h.hora_inicio ASC
+        """
+        cursor.execute(query, (rut_paciente,))
+        citas = cursor.fetchall()
+
+        return [{'nombre_paciente': row[0], 'nombre_especialista': row[1], 'fecha': datetime.strptime(row[3], '%Y-%m-%d').strftime('%d-%m-%Y') , 'hora_inicio': row[4], 'hora_fin': row[5]} for row in citas]
+    except Exception as ex:
+        print(ex)
+        return []
+    finally:
+        connection.close()
