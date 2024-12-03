@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Cuenta - Paciente</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/crear_cuenta_paciente.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Crear Cuenta - Paciente</h1>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash-message {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        <form id="crearCuentaForm" action="{{ url_for('crear_cuenta_paciente') }}" method="POST">
+            <label for="rut">RUT:</label>
+            <input type="text" id="rut" name="rut" placeholder="Ingrese su RUT" value="{{ request.form.rut or '' }}" required>
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" placeholder="Ingrese su nombre" value="{{ request.form.nombre or '' }}" required>
+            <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
+            <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" value="{{ request.form.fecha_nacimiento or '' }}" required>
+            <label for="telefono">Teléfono:</label>
+            <input type="tel" id="telefono" name="telefono" placeholder="Ingrese su teléfono" value="{{ request.form.telefono or '' }}" required>
+            <label for="correo">Correo:</label>
+            <input type="email" id="correo" name="correo" placeholder="Ingrese su correo" value="{{ request.form.correo or '' }}" required>
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password" name="password" placeholder="Ingrese su contraseña" required>
+            <button type="submit" class="full-width-btn">Crear Cuenta</button>
+        </form>
+        <button class="full-width-btn" onclick="location.href='{{ url_for('logPaciente') }}'">Volver</button>
+    </div>
+</body>
+</html>

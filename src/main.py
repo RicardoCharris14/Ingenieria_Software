@@ -38,14 +38,60 @@ app.secret_key = 'IngSoftware'
 def index():
     return render_template('index.html')
 
+@app.route('/logPaciente')
+def logPaciente():
+    return render_template('logPaciente.html')
+
+@app.route('/login_paciente', methods=['POST'])
+def login_paciente():
+    rut = request.form.get('rut')
+    password = request.form.get('password')
+    if not rut or not password:
+        flash('RUT o contraseña no ingresados', 'danger')
+        return redirect(url_for('logPaciente'))
+
+    # Verificar si el RUT y la contraseña pertenecen a un paciente
+    paciente = DB_functions.buscar_paciente(rut, password)
+    if paciente:
+        session['rut_paciente'] = rut
+        return redirect(url_for('paciente'))
+
+    flash('RUT o contraseña incorrectos', 'danger')
+    return redirect(url_for('logPaciente'))
+
+@app.route('/crear_cuenta_paciente', methods=['GET', 'POST'])
+def crear_cuenta_paciente():
+    if request.method == 'POST':
+        rut = request.form.get('rut')
+        nombre = request.form.get('nombre')
+        fecha_nacimiento = request.form.get('fecha_nacimiento')
+        telefono = request.form.get('telefono')
+        correo = request.form.get('correo')
+        password = request.form.get('password')
+
+        # Verificar si el RUT ya existe en la base de datos
+        if DB_functions.buscar_paciente_por_rut(rut):
+            flash('El RUT ya está registrado', 'danger')
+            return render_template('crear_cuenta_paciente.html', rut=rut, nombre=nombre, fecha_nacimiento=fecha_nacimiento, telefono=telefono, correo=correo)
+
+        # Crear la cuenta del paciente
+        try:
+            DB_functions.crear_cuenta_paciente(rut, nombre, password, fecha_nacimiento, telefono, correo)
+            flash('Cuenta creada exitosamente', 'success')
+            return redirect(url_for('logPaciente'))
+        except Exception as ex:
+            print(ex)
+            flash('Error al crear la cuenta', 'danger')
+            return render_template('crear_cuenta_paciente.html', rut=rut, nombre=nombre, fecha_nacimiento=fecha_nacimiento, telefono=telefono, correo=correo)
+    return render_template('crear_cuenta_paciente.html')
+
 @app.route('/paciente')
 def paciente():
     return render_template('paciente.html')
 
 @app.route('/paciente/citas')
 def citas_paciente():
-    #rut_paciente = session.get('rut_paciente')
-    rut_paciente = '11111111-1'
+    rut_paciente = session.get('rut_paciente')
     paciente = DB_functions.get_datos_paciente(rut_paciente)
     citas = DB_functions.get_citas_paciente(rut_paciente)
     return render_template('citas_paciente.html', rut_paciente = rut_paciente, citas = citas, paciente = paciente)
@@ -72,14 +118,6 @@ def doctor(rutE):
     
     #Fin Cambio
     return render_template('doctor.html', especialista_horarios=especialista_horarios)
-
-#FUNCION NUEVA
-@app.route('/ver_horarios/<rut_especialista>')
-def ver_horarios(rut_especialista):
-    horarios = DB_functions.obtener_horarios_especialistas(rut_especialista)
-    if horarios is None:
-        return jsonify({'error': 'No se pudieron obtener los horarios'}), 500
-    return render_template('ver_horarios.html', horarios=horarios)
 
 @app.route('/logAdmin')
 def logAdmin():
@@ -170,8 +208,9 @@ def seleccionar_especialista():
     especialistas = DB_functions.obtener_doctores("")
     return render_template('seleccionar_especialista.html', especialistas=especialistas)
 
-@app.route('/<rutP>/paciente/seleccionar_especialista/agendar_hora/<rutE>')
-def agendar_hora(rutP, rutE):
+@app.route('/paciente/seleccionar_especialista/agendar_hora/<rutE>')
+def agendar_hora(rutE):
+    rutP = session.get('rut_paciente')
     intervalo = DB_functions.obtener_periodo_temporal()
     horarios = DB_functions.obtener_horarios_disponibles("", intervalo[0]['fecha_inicio'], intervalo[0]['fecha_final'],"", rutE)
     especialista = DB_functions.buscar_doctor(rutE)
@@ -289,31 +328,6 @@ def obtener_medios_pago():
         return jsonify({'error': 'Error al obtener los medios de pago'}), 500
 
 
-@app.route('/login', methods=['POST'])
-def login():
-    rut = request.form.get('rut')
-    if not rut:
-        flash('RUT no ingresado', 'danger')
-        return redirect(url_for('index'))
-
-
-    # Verificar si el RUT pertenece a un doctor
-    doctor = DB_functions.buscar_doctor(rut)
-    if doctor:
-        session['user_type'] = 'doctor'
-        session['rut'] = rut
-        return redirect(url_for('doctor', rutE=rut))
-
-    # Verificar si el RUT pertenece a un paciente
-    paciente = DB_functions.buscar_paciente(rut)
-    if paciente:
-        session['user_type'] = 'paciente'
-        session['rut'] = rut
-        return redirect(url_for('paciente'))
-
-    flash('RUT no registrado', 'danger')
-    return redirect(url_for('index'))
-
 if __name__ == "__main__":
     #inicializar_recordatorios()
-    app.run(debug=False)
+    app.run(debug=True)

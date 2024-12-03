@@ -453,3 +453,51 @@ def eliminar_cita(id_horario):
     finally:
         connection.close()
 
+def buscar_paciente(rut, password):
+    try:
+        connection = sqlite3.connect("./src/Database/bd")
+        cursor = connection.cursor()
+
+        cursor.execute("SELECT * FROM Paciente WHERE rut = ? AND contraseña = ?", (rut, password))
+        paciente = cursor.fetchone()
+
+        if paciente:
+            return {'rut': paciente[0], 'nombre': paciente[1], 'fecha_nacimiento': paciente[3], 'telefono': paciente[4], 'correo': paciente[5]}
+        return None
+    except Exception as ex:
+        print(f"Error al buscar el paciente: {ex}")
+        return None
+    finally:
+        connection.close()
+        
+def buscar_paciente_por_rut(rut):
+    try:
+        connection = sqlite3.connect("./src/Database/bd")
+        cursor = connection.cursor()
+
+        cursor.execute("SELECT * FROM Paciente WHERE rut = ?", (rut,))
+        paciente = cursor.fetchone()
+
+        return paciente is not None
+    except Exception as ex:
+        print(f"Error al buscar el paciente por RUT: {ex}")
+        return False
+    finally:
+        connection.close()
+
+def crear_cuenta_paciente(rut, nombre, password, fecha_nacimiento, telefono, correo):
+    try:
+        connection = sqlite3.connect("./src/Database/bd")
+        cursor = connection.cursor()
+
+        cursor.execute("""
+            INSERT INTO Paciente (rut, nombre, contraseña, fecha_nacimiento, telefono, correo)
+            VALUES (?, ?, ?, ?, ?, ?)
+        """, (rut, nombre, password, fecha_nacimiento, telefono, correo))
+
+        connection.commit()
+    except Exception as ex:
+        print(f"Error al crear la cuenta del paciente: {ex}")
+        raise ex
+    finally:
+        connection.close()
