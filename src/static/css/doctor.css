@@ -1,0 +1,371 @@
+body {
+    font-family: Arial, sans-serif;
+    flex: auto;
+    text-align: center;
+    justify-items: center;
+    margin-top: 50px;
+    background-color: #f0f8ff;
+  }
+  
+  h1 {
+    color: #333;
+  }
+  
+  button {
+    padding: 10px 20px;
+    margin: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #7675cf;
+    color: white;
+    border: none;
+    border-radius: 5px;
+  }
+  .volver-btn {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #7675cf;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+  button:hover {
+    background-color: #584d9f;
+  }
+  
+  .menu {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr; /* Tres filas en el contenedor .menu */
+    justify-items: center; /* Centra los elementos horizontalmente */
+    align-items: center; /* Alinea los elementos al inicio de cada fila */
+    height: 75vh;
+    text-align: center;
+    /* border: 2px solid red; */
+    margin: 1px;
+  }
+  /* Opcional: estilo para los botones y título dentro de .menu */
+  .menu h1 {
+    margin-bottom: 10px;
+    font-size: 2rem;
+  }
+  
+  .menu button {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  
+  /* Configura .botones como una columna de tres filas */
+  .botones {
+    display: grid;
+    grid-template-rows: repeat(
+      3,
+      1fr
+    ); /* Tres filas iguales en altura para cada botón */
+  
+    width: 100%; /* Opcional: hace que los botones ocupen el ancho de la tercera fila */
+    grid-row: 3; /* Coloca .botones en la tercera fila de .menu */
+    justify-items: center;
+  }
+  #horarios {
+    margin-top: 20px;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  #horarios th,
+  #horarios td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  #horarios tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  #horarios th {
+    background-color: #7675cf;
+    color: white;
+  }
+  
+  .menu-superpuesto {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  
+    z-index: auto;
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: none;
+    background-color: transparent;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
+  /* Tabla de Especialistas */
+  #tablaEspecialistas {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    border-radius: 8px;
+  }
+  
+  #tablaEspecialistas th,
+  #tablaEspecialistas td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #dddddd;
+  }
+  
+  /* Estilos para el encabezado de la tabla */
+  #tablaEspecialistas th {
+    background-color: #007bff;
+    color: #ffffff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  #tablaEspecialistas th:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Estilos para las filas de la tabla */
+  #tablaEspecialistas tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  #tablaEspecialistas tr:nth-child(odd) {
+    background-color: #ffffff;
+  }
+  
+  #tablaEspecialistas tr:hover {
+    background-color: #e2e2e2;
+  }
+  
+  /* Encabezado de sección */
+  h1 {
+    color: #4a4a4a;
+    font-size: 1.8em;
+    margin-top: 20px;
+  }
+  
+  /* Adaptación para pantallas pequeñas */
+  @media (max-width: 768px) {
+    #tablaEspecialistas {
+      width: 100%;
+    }
+  
+    h1 {
+      font-size: 1.5em;
+    }
+  }
+  #horarios {
+    margin-top: 20px;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  #horarios th, #horarios td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  #horarios tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  #horarios th {
+    background-color: #7675cf;
+    color: white;
+  }
+  
+  .menu-superpuesto {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  
+    z-index: auto;
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: none;
+    background-color: transparent;
+    font-size: 20px;
+    cursor: pointer;
+  
+  }
+  /* Estilos para el menú horizontal */
+          .menu-horizontal {
+              background-color: #7675cf;
+              padding: 10px;
+              overflow: hidden;
+          }
+  
+          .menu-horizontal a {
+              float: left;
+              display: block;
+              color: black;
+              text-align: center;
+              padding: 14px 16px;
+              text-decoration: none;
+          }
+  
+          .menu-horizontal a:hover {
+              background-color: #7675cf;
+              color: black;
+          }
+  
+          /* Estilos para las pestañas */
+          .tab {
+              overflow: hidden;
+              border: 1px solid #693eff;
+              background-color: #7675cf;
+          }
+  
+          .tab button {
+              background-color: inherit;
+              float: left;
+              border: none;
+              outline: none;
+              cursor: pointer;
+              padding: 14px 16px;
+              transition: 0.3s;
+              font-size: 17px;
+          }
+  
+          .tab button:hover {
+              background-color: #ddd;
+          }
+  
+          .tab button.active {
+              background-color: #4b298c;
+          }
+  
+          .tabcontent {
+              display: none;
+              padding: 6px 12px;
+              border: 1px solid #ccc;
+              border-top: none;
+  
+          }
+  
+          /* Estilos  
+   para el buscador */
+          .search-container {
+              float: right;
+          }
+  
+          .search-container input[type=text] {
+              padding: 6px;
+              margin-top: 8px;
+              font-size: 17px;
+              border: none;
+          }
+  
+          .search-container button {
+              float: right;
+              padding: 6px 10px;
+              margin-top: 8px;
+              margin-right: 16px;
+              background: #ddd;
+              font-size: 17px;
+              border: none;
+              cursor: pointer;
+          }
+  @media screen and (max-width: 600px) {
+    .menu-horizontal a, .search-container button {
+      float: none;
+      display: block;
+      text-align: left;
+      width: 100%;
+      margin: 0;
+      padding: 14px;
+    }
+  
+    .search-container {
+      float: none;
+    }
+  }
+  
+  .medios-pago {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  
+  .medio-pago {
+    margin: 10px;
+    text-align: center;
+  }
+  
+  .medio-pago .tarjeta {
+    width: 80px;
+    height: 50px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    background-color: #eee;
+    position: relative; /* Para posicionar los pseudo-elementos */
+  }
+  
+  .debito .tarjeta {
+    background-image:
+      linear-gradient(to bottom, #f7d060, #f0ad4e); /* Gradiente para tarjeta de débito */
+  }
+  
+  .credito .tarjeta {
+    background-image:
+      linear-gradient(to bottom, #5cb85c, #4cae4c); /* Gradiente para tarjeta de crédito */
+  }
+  
+  .tarjeta::before { /* Pseudo-elemento para el chip */
+    content: "";
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 15px;
+    height: 10px;
+    background-color: gold;
+    border-radius: 3px;
+  }
+  
+  .tarjeta::after { /* Pseudo-elemento para las líneas */
+    content: "";
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    width: 60px;
+    height: 3px;
+    background-color: #ddd;
+  }

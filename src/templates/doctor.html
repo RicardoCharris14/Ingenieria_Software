@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página del Doctor</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/doctor.css') }}">
+    <title>Doctor</title>
 </head>
 <body>
-    <h1>Especialistas y sus Horarios</h1>
-    
+    <button class="volver-btn" onclick="location.href='{{ url_for('index') }}'">Volver</button>
+    <h1>Información del Especialista</h1>
     <table id="tablaEspecialistas">
         <thead>
             <tr>
@@ -19,8 +19,8 @@
         </thead>
         <tbody>            
             <tr>
-                <td>{{ especialista_horarios.especialista.nombre }}</td>
-                <td>{{ especialista_horarios.especialista.especialidad }}</td>
+                <td>{{ especialista[0].nombre }}</td>
+                <td>{{ especialista[0].especialidad }}</td>
                 <td>
                     <table>
                         <thead>
@@ -32,12 +32,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for horario in especialista_horarios.horarios %}
+                            {% for horario in horarios %}
                                 <tr>
-                                    <td>{{ horario[1] }}</td> <!-- Fecha -->
-                                    <td>{{ horario[2] }}</td> <!-- Hora de inicio -->
-                                    <td>{{ horario[3] }}</td> <!-- Hora de fin -->
-                                    <td>{{ 'Disponible' if horario[4] else 'Reservado' }}</td>
+                                    <td>{{ horario.fecha }}</td> <!-- Fecha -->
+                                    <td>{{ horario.hora_inicio }}</td> <!-- Hora de inicio -->
+                                    <td>{{ horario.hora_fin }}</td> <!-- Hora de fin -->
+                                    <td>{{ 'Disponible' if horario.disponible else 'Reservado' }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>

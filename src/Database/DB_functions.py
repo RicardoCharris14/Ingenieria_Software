@@ -97,8 +97,7 @@ def obtener_doctores(rutE):
     try:
         connection = sqlite3.connect("./src/Database/bd")
         cursor = connection.cursor()
-        instruction = "SELECT rut, nombre, especialidad FROM Especialista" \
-                      ""
+        instruction = "SELECT rut, nombre, especialidad FROM Especialista "
         parameters = []
         if rutE:
             instruction += "WHERE rut = ?"
@@ -119,14 +118,14 @@ def buscar_doctor(rut_especialista):
         connection = sqlite3.connect("./src/Database/bd")
         cursor = connection.cursor()
 
-        cursor.execute("""SELECT rut, nombre, especialidad, valor_atencion FROM Especialista WHERE rut = ?""", (rut_especialista,))
+        cursor.execute("""SELECT rut, nombre, contraseña, especialidad, valor_atencion FROM Especialista WHERE rut = ?""", (rut_especialista,))
         
         row = cursor.fetchone()
         
         if not row:
             return None
 
-        doctor = {'rut': row[0],'nombre': row[1],'especialidad': row[2],'valor_atencion': row[3]}
+        doctor = {'rut': row[0], 'nombre': row[1], 'contraseña': row[2], 'especialidad': row[3], 'valor_atencion': row[4]}
         return doctor
     except Exception as ex:
         print(f"Error al buscar el doctor: {ex}")

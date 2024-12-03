@@ -106,18 +106,33 @@ def eliminar_cita(id_horario):
         print(ex)
         return jsonify({'success': False, 'error': str(ex)})
 
-# Rutas adicionales para otras secciones
-@app.route('/<rutE>/doctor')
-def doctor(rutE):
+@app.route('/doctor')
+def doctor():
+    rutE = session.get('rut_especialista')
     especialista = DB_functions.obtener_doctores(rutE)
-    horarios = DB_functions.obtener_horarios_especialistas(rutE)  # Usamos rut para obtener los horarios
-    especialista_horarios = {
-        'especialista': especialista,
-        'horarios': horarios
-    }
+    horarios = DB_functions.obtener_horarios_especialistas(rutE)  
     
-    #Fin Cambio
-    return render_template('doctor.html', especialista_horarios=especialista_horarios)
+    return render_template('doctor.html', especialista=especialista, horarios=horarios)
+
+@app.route('/logEspecialista')
+def logEspecialista():
+    return render_template('logEspecialista.html')
+
+@app.route('/login_especialista', methods=['POST'])
+def login_especialista():
+    rut = request.form.get('rut')
+    password = request.form.get('password')
+    if not rut or not password:
+        flash('RUT o contraseña no ingresados', 'danger')
+        return redirect(url_for('logEspecialista'))
+
+    especialista = DB_functions.buscar_doctor(rut)
+    if especialista and especialista['contraseña'] == password:
+        session['rut_especialista'] = rut
+        return redirect(url_for('doctor', rutE=rut))
+
+    flash('RUT o contraseña incorrectos', 'danger')
+    return redirect(url_for('logEspecialista'))
 
 @app.route('/logAdmin')
 def logAdmin():
