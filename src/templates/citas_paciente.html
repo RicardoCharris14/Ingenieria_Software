@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Citas del Paciente</title>
+    <script src="{{ url_for('static', filename='js/citas_paciente.js') }}" type="text/javascript"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/citas_paciente.css') }}">
 </head>
 <body>
@@ -23,6 +24,7 @@
                     <th>Fecha</th>
                     <th>Hora de Inicio</th>
                     <th>Hora de Fin</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,6 +34,9 @@
                     <td>{{ cita.fecha }}</td>
                     <td>{{ cita.hora_inicio }}</td>
                     <td>{{ cita.hora_fin }}</td>
+                    <td>
+                        <button onclick="eliminarCita('{{ cita.id_horario }}', '{{ cita.fecha }}', '{{ cita.hora_inicio }}')">Eliminar</button>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

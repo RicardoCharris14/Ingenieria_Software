@@ -50,6 +50,16 @@ def citas_paciente():
     citas = DB_functions.get_citas_paciente(rut_paciente)
     return render_template('citas_paciente.html', rut_paciente = rut_paciente, citas = citas, paciente = paciente)
 
+@app.route('/eliminar_cita/<int:id_horario>', methods=['DELETE'])
+def eliminar_cita(id_horario):
+    try:
+        DB_functions.eliminar_cita(id_horario)
+        DB_functions.modificar_disponibilidad_horario(id_horario, '1')
+        return jsonify({'success': True})
+    except Exception as ex:
+        print(ex)
+        return jsonify({'success': False, 'error': str(ex)})
+
 # Rutas adicionales para otras secciones
 @app.route('/<rutE>/doctor')
 def doctor(rutE):
@@ -286,11 +296,6 @@ def login():
         flash('RUT no ingresado', 'danger')
         return redirect(url_for('index'))
 
-    # Verificar si el RUT pertenece a un administrador
-    if DB_functions.is_admin(rut):
-        session['user_type'] = 'admin'
-        session['rut'] = rut
-        return redirect(url_for('administrativo'))
 
     # Verificar si el RUT pertenece a un doctor
     doctor = DB_functions.buscar_doctor(rut)

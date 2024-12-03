@@ -413,7 +413,7 @@ def get_citas_paciente(rut_paciente):
         cursor.execute(query, (rut_paciente,))
         citas = cursor.fetchall()
 
-        return [{'nombre_paciente': row[0], 'nombre_especialista': row[1], 'fecha': datetime.strptime(row[3], '%Y-%m-%d').strftime('%d-%m-%Y') , 'hora_inicio': row[4], 'hora_fin': row[5]} for row in citas]
+        return [{'nombre_paciente': row[0], 'nombre_especialista': row[1], 'id_horario': row[2], 'fecha': datetime.strptime(row[3], '%Y-%m-%d').strftime('%d-%m-%Y') , 'hora_inicio': row[4], 'hora_fin': row[5]} for row in citas]
     except Exception as ex:
         print(ex)
         return []
@@ -439,3 +439,17 @@ def get_datos_paciente(rut_paciente):
         return []
     finally:
         connection.close()
+
+def eliminar_cita(id_horario):
+    try:
+        connection = sqlite3.connect("./src/Database/bd")
+        cursor = connection.cursor()
+
+        cursor.execute("DELETE FROM Cita WHERE id_horario = ?", (id_horario,))
+        connection.commit()
+    except Exception as ex:
+        print(ex)
+        raise ex
+    finally:
+        connection.close()
+
