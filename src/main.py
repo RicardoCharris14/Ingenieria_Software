@@ -1,35 +1,35 @@
 from flask import Flask, jsonify, request, render_template, redirect, url_for, flash, session
-#import pywhatkit as kit
+import pywhatkit as kit
 import datetime
 import threading
 from Database import DB_functions
 
 
-# def inicializar_recordatorios():
-#     recordatorios = DB_functions.obtener_recordatorios()
+def inicializar_recordatorios():
+    recordatorios = DB_functions.obtener_recordatorios()
     
-#     for recordatorio in recordatorios:
-#         print(recordatorio)
-#         id_horario, numero_paciente, mensaje, fecha_envio = recordatorio
+    for recordatorio in recordatorios:
+        print(recordatorio)
+        id_horario, numero_paciente, mensaje, fecha_envio = recordatorio
 
-#         fecha_hora_envio = datetime.datetime.strptime(fecha_envio, '%Y-%m-%d %H:%M:%S')
+        fecha_hora_envio = datetime.datetime.strptime(fecha_envio, '%Y-%m-%d %H:%M:%S')
      
-#         diferencia = (fecha_hora_envio - datetime.datetime.now()).total_seconds()
+        diferencia = (fecha_hora_envio - datetime.datetime.now()).total_seconds()
         
-#         if diferencia > 0:
-#             enviar_recordatorio(numero_paciente, mensaje, fecha_hora_envio)
-#         else:
-#             print(f"El recordatorio para {numero_paciente} a las {fecha_hora_envio} ya pasó.")
+        if diferencia > 0:
+            enviar_recordatorio(numero_paciente, mensaje, fecha_hora_envio)
+        else:
+            print(f"El recordatorio para {numero_paciente} a las {fecha_hora_envio} ya pasó.")
 
-# def enviar_recordatorio(numero, mensaje, tiempo_envio):
-#     """Función para programar el envío de un recordatorio en el momento indicado."""
-#     diferencia = (tiempo_envio - datetime.datetime.now()).total_seconds()
-#     if diferencia > 0:
-#         threading.Timer(diferencia, lambda: kit.sendwhatmsg_instantly(numero, mensaje)).start()
-#         print(f"Recordatorio programado para {numero} en {tiempo_envio}.")
-#         return True
-#     else:
-#         return False
+def enviar_recordatorio(numero, mensaje, tiempo_envio):
+    """Función para programar el envío de un recordatorio en el momento indicado."""
+    diferencia = (tiempo_envio - datetime.datetime.now()).total_seconds()
+    if diferencia > 0:
+        threading.Timer(diferencia, lambda: kit.sendwhatmsg_instantly(numero, mensaje)).start()
+        print(f"Recordatorio programado para {numero} en {tiempo_envio}.")
+        return True
+    else:
+        return False
 
 def registrar_log_sesion(rut_especialista, mensaje):
     if 'logs' not in session:
@@ -114,10 +114,9 @@ def eliminar_cita(id_horario):
         DB_functions.eliminar_cita(id_horario)
         DB_functions.modificar_disponibilidad_horario(id_horario, '1')
         horario = DB_functions.obtener_horario(id_horario)
-        id_horario, fecha, hora_inicio, hora_fin, rut_especialista = horario
 
-        mensaje_log = f"Cita con fecha {fecha} {hora_inicio} - {hora_fin} cancelada"
-        registrar_log_sesion(rut_especialista, mensaje_log)
+        mensaje_log = f"Cita con fecha {horario['fecha']} {horario['hora_inicio']} - {horario['hora_fin']} cancelada"
+        registrar_log_sesion(horario['rut_especialista'], mensaje_log)
         return jsonify({'success': True})
     except Exception as ex:
         print(ex)
@@ -325,14 +324,13 @@ def reservar():
             DB_functions.bloquear_horario(id)
             
             horario = DB_functions.obtener_horario(id)
-            id_horario, fecha, hora_inicio, hora_fin, rut_especialista = horario
 
-            mensaje_log = f"Cita agregada con el paciente {rutP} para {fecha} {hora_inicio} - {hora_fin}"
-            registrar_log_sesion(rut_especialista, mensaje_log)
+            mensaje_log = f"Cita agregada con el paciente {rutP} para {horario['fecha']} {horario['hora_inicio']} - {horario['hora_fin']}"
+            registrar_log_sesion(horario['rut_especialista'], mensaje_log)
 
             numero_paciente = "+56984450039"
-            mensaje = f"Hola, recuerde su cita con el especialista {rut_especialista} el día {fecha} a las {hora_inicio}."
-            fecha_hora_envio = datetime.datetime.strptime(f"{fecha} {hora_inicio}", '%Y-%m-%d %H:%M') - datetime.timedelta(minutes=1)
+            mensaje = f"Hola, recuerde su cita con el especialista {horario['rut_especialista']} el día {horario['fecha']} a las {horario['hora_inicio']}."
+            fecha_hora_envio = datetime.datetime.strptime(f"{horario['fecha']} {horario['hora_inicio']}", '%Y-%m-%d %H:%M') - datetime.timedelta(minutes=1)
             
             #if(enviar_recordatorio(numero_paciente, mensaje, fecha_hora_envio)):
             #  DB_functions.guardar_recordatorio(id, numero_paciente, mensaje, fecha_hora_envio)
@@ -422,5 +420,5 @@ def obtener_medios_pago():
 
 
 if __name__ == "__main__":
-    #inicializar_recordatorios()
+    inicializar_recordatorios()
     app.run(debug=True)

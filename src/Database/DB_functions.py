@@ -34,7 +34,7 @@ def obtener_horario(id_horario):
         """
         cursor.execute(query, (id_horario,))
         horario = cursor.fetchone()
-
+        horario = {'id': horario[0], 'fecha': datetime.strptime(horario[1], '%Y-%m-%d').strftime('%d-%m-%Y'), 'hora_inicio': horario[2], 'hora_fin': horario[3], 'rut_especialista': horario[4]}
         if horario:
             return horario
         return None 
