@@ -3,12 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página del Doctor</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/doctor.css') }}">
-    <title>Doctor</title>
+    <script src="{{ url_for('static', filename='js/doctor.js') }}" type="text/javascript"></script>
 </head>
 <body>
     <button class="volver-btn" onclick="location.href='{{ url_for('index') }}'">Volver</button>
-    <h1>Información del Especialista</h1>
+    
+
+    <!-- Botón de Notificaciones -->
+    <button id="btnNotificaciones" onclick="toggleNotificaciones()">Notificaciones</button>
+
+    <!-- Ventana Emergente de Notificaciones -->
+    <div id="ventanaNotificaciones">
+        <h2>Notificaciones</h2>
+        {% if logs %}
+            {% for log in logs %}
+                <div class="notificacion">{{ log['mensaje'] }}</div>
+            {% endfor %}
+        {% else %}
+            <p>No hay notificaciones.</p>
+        {% endif %}
+    </div>
+    <h1>Especialistas y sus Horarios</h1>
+    
     <table id="tablaEspecialistas">
         <thead>
             <tr>
