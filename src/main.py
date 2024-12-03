@@ -1,35 +1,36 @@
 from flask import Flask, jsonify, request, render_template, redirect, url_for, flash, session
-import pywhatkit as kit
+#import pywhatkit as kit
 import datetime
-import threading
+#import threading
 from Database import DB_functions
 
 
-def inicializar_recordatorios():
-    recordatorios = DB_functions.obtener_recordatorios()
-    
-    for recordatorio in recordatorios:
-        print(recordatorio)
-        id_horario, numero_paciente, mensaje, fecha_envio = recordatorio
+#def inicializar_recordatorios():
+#    recordatorios = DB_functions.obtener_recordatorios()
+#    
+#    for recordatorio in recordatorios:
+#        print(recordatorio)
+#        id_horario, numero_paciente, mensaje, fecha_envio = recordatorio
 
-        fecha_hora_envio = datetime.datetime.strptime(fecha_envio, '%Y-%m-%d %H:%M:%S')
+
+#        fecha_hora_envio = datetime.datetime.strptime(fecha_envio, '%Y-%m-%d %H:%M:%S')
      
-        diferencia = (fecha_hora_envio - datetime.datetime.now()).total_seconds()
+#        diferencia = (fecha_hora_envio - datetime.datetime.now()).total_seconds()
         
-        if diferencia > 0:
-            enviar_recordatorio(numero_paciente, mensaje, fecha_hora_envio)
-        else:
-            print(f"El recordatorio para {numero_paciente} a las {fecha_hora_envio} ya pasó.")
+#        if diferencia > 0:
+#            enviar_recordatorio(numero_paciente, mensaje, fecha_hora_envio)
+#        else:
+#            print(f"El recordatorio para {numero_paciente} a las {fecha_hora_envio} ya pasó.")
 
-def enviar_recordatorio(numero, mensaje, tiempo_envio):
-    """Función para programar el envío de un recordatorio en el momento indicado."""
-    diferencia = (tiempo_envio - datetime.datetime.now()).total_seconds()
-    if diferencia > 0:
-        threading.Timer(diferencia, lambda: kit.sendwhatmsg_instantly(numero, mensaje)).start()
-        print(f"Recordatorio programado para {numero} en {tiempo_envio}.")
-        return True
-    else:
-        return False
+#def enviar_recordatorio(numero, mensaje, tiempo_envio):
+#    """Función para programar el envío de un recordatorio en el momento indicado."""
+#    diferencia = (tiempo_envio - datetime.datetime.now()).total_seconds()
+#    if diferencia > 0:
+#        threading.Timer(diferencia, lambda: kit.sendwhatmsg_instantly(numero, mensaje)).start()
+#        print(f"Recordatorio programado para {numero} en {tiempo_envio}.")
+#        return True
+#    else:
+#        return False
 
 def registrar_log_sesion(rut_especialista, mensaje):
     if 'logs' not in session:
@@ -420,5 +421,5 @@ def obtener_medios_pago():
 
 
 if __name__ == "__main__":
-    inicializar_recordatorios()
+    #inicializar_recordatorios()
     app.run(debug=True)

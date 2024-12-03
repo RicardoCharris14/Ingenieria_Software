@@ -9,6 +9,7 @@
 </head>
 <body>
     <div class="container">
+        <button class="volver-btn" onclick="location.href='{{ url_for('paciente') }}'">Volver</button>
         <h1>Información del Paciente</h1>
         <p><strong>Nombre:</strong> {{ paciente.nombre }}</p>
         <p><strong>RUT:</strong> {{ paciente.rut }}</p>
