@@ -22,6 +22,7 @@
                     <th>Fecha</th>
                     <th>Hora de Inicio</th>
                     <th>Hora de Fin</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,6 +33,9 @@
                     <td>{{ cita.fecha }}</td>
                     <td>{{ cita.hora_inicio }}</td>
                     <td>{{ cita.hora_fin }}</td>
+                    <td>
+                        <button onclick="eliminarCita('{{ cita.id_horario }}', '{{ cita.fecha }}', '{{ cita.hora_inicio }}')">Eliminar</button>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

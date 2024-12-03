@@ -322,7 +322,7 @@ def obtener_citas_especialista(rut_especialista):
         cursor.execute(query, (rut_especialista,))
         citas = cursor.fetchall()
 
-        return [{'nombre_paciente': row[0], 'rut_paciente': row[1], 'fecha': datetime.strptime(row[3], '%Y-%m-%d').strftime('%d-%m-%Y') , 'hora_inicio': row[4], 'hora_fin': row[5]} for row in citas]
+        return [{'nombre_paciente': row[0], 'rut_paciente': row[1],'id_horario': row[2], 'fecha': datetime.strptime(row[3], '%Y-%m-%d').strftime('%d-%m-%Y') , 'hora_inicio': row[4], 'hora_fin': row[5]} for row in citas]
     except Exception as ex:
         print(ex)
         return []
