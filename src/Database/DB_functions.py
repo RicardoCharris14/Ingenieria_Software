@@ -183,7 +183,8 @@ def obtener_periodo_temporal():
             SELECT fecha_inicio, fecha_final FROM Parametro
             """
         )
-        parametros = [{'fecha_inicio': datetime.strptime(row[0], '%Y-%m-%d').strftime('%d-%m-%Y'), 'fecha_final': datetime.strptime(row[1], '%Y-%m-%d').strftime('%d-%m-%Y')} for row in cursor.fetchall()]
+        params = cursor.fetchone()
+        parametros = {'fecha_inicio': params[0], 'fecha_final': params[1]}
         return parametros
     except Exception as ex:
         print(ex)
@@ -469,7 +470,7 @@ def buscar_paciente(rut, password):
         return None
     finally:
         connection.close()
-        
+
 def buscar_paciente_por_rut(rut):
     try:
         connection = sqlite3.connect("./src/Database/bd")
@@ -498,6 +499,59 @@ def crear_cuenta_paciente(rut, nombre, password, fecha_nacimiento, telefono, cor
         connection.commit()
     except Exception as ex:
         print(f"Error al crear la cuenta del paciente: {ex}")
+        raise ex
+    finally:
+        connection.close()
+
+def cambiar_contraseña_admin(nueva_contraseña):
+    try:
+        connection = sqlite3.connect("./src/Database/bd")
+        cursor = connection.cursor()
+
+        cursor.execute("""
+            UPDATE Parametro
+            SET contraseña_admin = ?
+            WHERE id = 1
+        """, (nueva_contraseña,))
+
+        connection.commit()
+    except Exception as ex:
+        print(f"Error al cambiar la contraseña del administrador: {ex}")
+        raise ex
+    finally:
+        connection.close()
+
+def cambiar_fechas(fecha_inicial, fecha_final):
+    try:
+        connection = sqlite3.connect("./src/Database/bd")
+        cursor = connection.cursor()
+
+        cursor.execute("""
+            UPDATE Parametro
+            SET fecha_inicio = ?, fecha_final = ?
+            WHERE id = 1
+        """, (fecha_inicial, fecha_final))
+
+        connection.commit()
+    except Exception as ex:
+        print(f"Error al cambiar las fechas: {ex}")
+        raise ex
+    finally:
+        connection.close()
+
+def anadir_especialista(rut, nombre, contrasena, especialidad, valor_atencion, telefono, correo):
+    try:
+        connection = sqlite3.connect("./src/Database/bd")
+        cursor = connection.cursor()
+
+        cursor.execute("""
+            INSERT INTO Especialista (rut, nombre, contraseña, especialidad, valor_atencion, telefono, correo)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        """, (rut, nombre, contrasena, especialidad, valor_atencion, telefono, correo))
+
+        connection.commit()
+    except Exception as ex:
+        print(f"Error al añadir el especialista: {ex}")
         raise ex
     finally:
         connection.close()

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrativos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/configuraciones.css') }}">
+</head>
+<body>
+    <div class="container">
+        <button class="volver-btn" onclick="location.href='{{ url_for('administrativo') }}'">Volver</button>
+        <h1>Panel de configuración</h1>
+
+        <!-- Bloque para mostrar mensajes flash -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash-message {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <h2>Cambiar Contraseña de Administrador</h2>
+        <form action="{{ url_for('cambiar_contraseña_admin') }}" method="POST">
+            <label for="nueva_contraseña">Nueva Contraseña:</label>
+            <input type="password" id="nueva_contraseña" name="nueva_contraseña" required>
+            <button type="submit">Cambiar Contraseña</button>
+        </form>
+
+        <h2>Modificar Fechas Para Agendar Cita</h2>
+        <form action="{{ url_for('cambiar_fechas') }}" method="POST" class="form-fechas">
+            <div class="fechas-container">
+                <div class="fecha-item">
+                    <label for="fecha_inicial">Fecha Inicial:</label>
+                    <input type="date" id="fecha_inicial" name="fecha_inicial" required>
+                </div>
+                <div class="fecha-item">
+                    <label for="fecha_final">Fecha Final:</label>
+                    <input type="date" id="fecha_final" name="fecha_final" required>
+                </div>
+            </div>
+            <button type="submit">Modificar Fechas</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -21,16 +21,20 @@ button {
     border-radius: 5px;
 }
 
+.boton-p {
+    width: 200px;
+}
+
 button:hover {
     background-color: #584d9f;
 }
 
 .menu {
     display: grid;
-    grid-template-rows: 1fr 1fr 1fr 1fr; /* Cuatro filas en el contenedor .menu */
+    grid-template-rows: auto auto auto auto; /* Cuatro filas en el contenedor .menu */
     justify-items: center; /* Centra los elementos horizontalmente */
     align-items: center; /* Alinea los elementos al inicio de cada fila */
-    height: 75vh;
+    height: 50vh;
     text-align: center;
     margin: 1px;
 }
@@ -38,6 +42,12 @@ button:hover {
 .menu h1 {
     margin-bottom: 10px;
     font-size: 2rem;
+}
+
+.menu p {
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    color: #555;
 }
 
 .menu button {

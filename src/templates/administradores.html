@@ -9,6 +9,7 @@
 <body>
     <div class="container">
         <h1>Panel de Administración</h1>
+        <button onclick="location.href='{{ url_for('anadir_especialista') }}'">Añadir Especialista</button>
         <button onclick="location.href='{{ url_for('gestionar_especialistas') }}'">Gestionar Especialistas</button>
         <button onclick="location.href='{{ url_for('configuraciones') }}'">Configuraciones</button>
         <button onclick="location.href='{{ url_for('index') }}'">Volver Atrás</button>

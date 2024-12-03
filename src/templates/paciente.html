@@ -6,7 +6,6 @@
     <title>Página de Paciente</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/paciente.css') }}">
 </head>
-
 <body>
     <div class="tab">
         <a href="#previsiones">
@@ -19,12 +18,11 @@
     </div>
     <div class="menu">
         <h1>Bienvenido a la Página del Paciente</h1>
-        <p>Esta sección contiene información específica para pacientes.</p>
 
         <!-- Botones para las opciones principales -->
-        <button onclick="location.href='{{ url_for('buscar_especialistas') }}'">Buscar Especialista</button>
-        <button onclick="location.href='{{ url_for('citas_paciente') }}'">Citas</button>
-        <button class="volver-btn" onclick="location.href='{{ url_for('index') }}'">Volver al Inicio</button>
+        <button class="boton-p" onclick="location.href='{{ url_for('buscar_especialistas') }}'">Buscar Especialista</button>
+        <button class="boton-p" onclick="location.href='{{ url_for('citas_paciente') }}'">Citas</button>
+        <button class="boton-p" class="volver-btn" onclick="location.href='{{ url_for('index') }}'">Volver al Inicio</button>
     </div>
 
     <div class="menu-superpuesto" id="previsiones">
@@ -35,7 +33,7 @@
     </div>
 
     <div class="menu-superpuesto" id="pagos">
-        <button class="close-button" onclick="cerrarMediosPago()" >&times;</button>
+        <button class="close-button" onclick="cerrarMediosPago()">&times;</button>
         <h2>Medios de Pago</h2>
         <div class="medios-pago">
             <div class="medio-pago debito">
@@ -51,139 +49,138 @@
 
     <script>
         function mostrarPrevisiones() {
-  document.getElementById("previsiones").style.display = "block";
+            document.getElementById("previsiones").style.display = "block";
 
-  var rutEspecialista = document.getElementById("especialistaPrevision").value;
+            var rutEspecialista = document.getElementById("especialistaPrevision").value;
 
-  fetch('/obtener_previsiones')
-    .then(response => response.json())
-    .then(previsiones => {
-      var listaPrevisionesDiv = document.getElementById("listaPrevisiones");
-      listaPrevisionesDiv.innerHTML = "";
+            fetch('/obtener_previsiones')
+                .then(response => response.json())
+                .then(previsiones => {
+                    var listaPrevisionesDiv = document.getElementById("listaPrevisiones");
+                    listaPrevisionesDiv.innerHTML = "";
 
-      if (previsiones.length > 0) {
-        var lista = document.createElement("ul");
-        previsiones.forEach(prevision => {
-          var elemento = document.createElement("li");
-          elemento.textContent = prevision;
-          lista.appendChild(elemento);
-        });
-        listaPrevisionesDiv.appendChild(lista);
-      } else {
-        listaPrevisionesDiv.innerHTML = "<p>No se encontraron previsiones para este especialista.</p>";
-      }
-    })
-    .catch(error => console.error('Error al obtener las previsiones:', error));
-}
+                    if (previsiones.length > 0) {
+                        var lista = document.createElement("ul");
+                        previsiones.forEach(prevision => {
+                            var elemento = document.createElement("li");
+                            elemento.textContent = prevision;
+                            lista.appendChild(elemento);
+                        });
+                        listaPrevisionesDiv.appendChild(lista);
+                    } else {
+                        listaPrevisionesDiv.innerHTML = "<p>No se encontraron previsiones para este especialista.</p>";
+                    }
+                })
+                .catch(error => console.error('Error al obtener las previsiones:', error));
+        }
 
+        function cerrarPrevisiones() {
+            document.getElementById("previsiones").style.display = "none";
+        }
 
-
-function cerrarPrevisiones() {
-  document.getElementById("previsiones").style.display = "none";
-}
         function mostrarMenuPrecios() {
-      document.getElementById("menuPrecios").style.display = "block";
-    }
+            document.getElementById("menuPrecios").style.display = "block";
+        }
 
-    function cerrarMenuPrecios() {
-      document.getElementById("menuPrecios").style.display = "none";
-    }
-    function mostrarMediosPago() {
-  document.getElementById("pagos").style.display = "block";
-}
+        function cerrarMenuPrecios() {
+            document.getElementById("menuPrecios").style.display = "none";
+        }
 
-    function cerrarMediosPago() {
-      document.getElementById("pagos").style.display = "none";
-    }
+        function mostrarMediosPago() {
+            document.getElementById("pagos").style.display = "block";
+        }
 
+        function cerrarMediosPago() {
+            document.getElementById("pagos").style.display = "none";
+        }
 
         // Obtener las especialidades y los precios al cargar la página
         window.onload = function() {
             fetch('/obtener_especialidades')
-            .then(response => response.json())
-            .then(especialidades => {
-                var especialidadSelect = document.getElementById("especialidad");
-                especialidades.forEach(especialidad => {
-                    var option = document.createElement("option");
-                    option.value = especialidad;
-                    option.text = especialidad;
-                    especialidadSelect.add(option);
-                });
-            })
-            .catch(error => console.error('Error al obtener las especialidades:', error));
+                .then(response => response.json())
+                .then(especialidades => {
+                    var especialidadSelect = document.getElementById("especialidad");
+                    especialidades.forEach(especialidad => {
+                        var option = document.createElement("option");
+                        option.value = especialidad;
+                        option.text = especialidad;
+                        especialidadSelect.add(option);
+                    });
+                })
+                .catch(error => console.error('Error al obtener las especialidades:', error));
 
             // Obtener los doctores al cargar la página
             fetch('/obtener_doctores')
-            .then(response => response.json())
-            .then(doctores => {
-                var doctorSelect = document.getElementById("doctor");
-                doctores.forEach(doctor => {
-                    var option = document.createElement("option");
-                    option.value = doctor.rut;
-                    option.text = doctor.nombre;
-                    doctorSelect.add(option);
-                });
-            })
-            .catch(error => console.error('Error al obtener los doctores:', error));
-            var especialistaSelect = document.getElementById("especialistaCosto");
-      especialistaSelect.addEventListener('change', function() {
-        var rutEspecialista = this.value;
-        fetch(`/obtener_costo_atencion?rut=${rutEspecialista}`)
-        .then(response => response.json())
-        .then(costo => {
-          document.getElementById("costoAtencion").innerText = `Costo de atención: $${costo}`;
-        })
-        .catch(error => console.error('Error al obtener el costo de atención:', error));
-      });
-    };
+                .then(response => response.json())
+                .then(doctores => {
+                    var doctorSelect = document.getElementById("doctor");
+                    doctores.forEach(doctor => {
+                        var option = document.createElement("option");
+                        option.value = doctor.rut;
+                        option.text = doctor.nombre;
+                        doctorSelect.add(option);
+                    });
+                })
+                .catch(error => console.error('Error al obtener los doctores:', error));
 
+            var especialistaSelect = document.getElementById("especialistaCosto");
+            especialistaSelect.addEventListener('change', function() {
+                var rutEspecialista = this.value;
+                fetch(`/obtener_costo_atencion?rut=${rutEspecialista}`)
+                    .then(response => response.json())
+                    .then(costo => {
+                        document.getElementById("costoAtencion").innerText = `Costo de atención: $${costo}`;
+                    })
+                    .catch(error => console.error('Error al obtener el costo de atención:', error));
+            });
+        };
 
         function buscarHorarios() {
-    // Obtener los valores de los filtros
-    var especialidad = document.getElementById("especialidad").value;
-    var dia = document.getElementById("dia").value;
-    var hora = document.getElementById("hora").value;
-    var doctor = document.getElementById("doctor").value;
+            // Obtener los valores de los filtros
+            var especialidad = document.getElementById("especialidad").value;
+            var dia = document.getElementById("dia").value;
+            var hora = document.getElementById("hora").value;
+            var doctor = document.getElementById("doctor").value;
 
-    // Construir la URL con los parámetros de búsqueda
-    var url = '/buscar_horarios?';
-    if (especialidad) url += 'especialidad=' + especialidad + '&';
-    if (dia) url += 'dia=' + dia + '&';
-    if (hora) url += 'hora=' + hora + '&';
-    if (doctor) url += 'doctor=' + doctor;
+            // Construir la URL con los parámetros de búsqueda
+            var url = '/buscar_horarios?';
+            if (especialidad) url += 'especialidad=' + especialidad + '&';
+            if (dia) url += 'dia=' + dia + '&';
+            if (hora) url += 'hora=' + hora + '&';
+            if (doctor) url += 'doctor=' + doctor;
 
-    // Realizar la solicitud al servidor usando fetch
-    fetch(url)
-    .then(response => response.json())
-    .then(horarios => {
-        // Limpiar la sección de horarios
-        var horariosDiv = document.getElementById("horarios");
-        horariosDiv.innerHTML = "";
+            // Realizar la solicitud al servidor usando fetch
+            fetch(url)
+                .then(response => response.json())
+                .then(horarios => {
+                    // Limpiar la sección de horarios
+                    var horariosDiv = document.getElementById("horarios");
+                    horariosDiv.innerHTML = "";
 
-        // Mostrar los horarios en una tabla
-        if (horarios.length > 0) {
-            var tabla = document.createElement("table");
-            tabla.id = "horarios";
-            var encabezado = tabla.insertRow();
-            encabezado.innerHTML = "<th>Día</th><th>Especialista</th><th>Hora</th><th>Previsión</th><th>Costo</th><th>Acción</th>";
+                    // Mostrar los horarios en una tabla
+                    if (horarios.length > 0) {
+                        var tabla = document.createElement("table");
+                        tabla.id = "horarios";
+                        var encabezado = tabla.insertRow();
+                        encabezado.innerHTML = "<th>Día</th><th>Especialista</th><th>Hora</th><th>Previsión</th><th>Costo</th><th>Acción</th>";
 
-            horarios.forEach(horario => {
-                var fila = tabla.insertRow();
-                fila.innerHTML = "<td>" + horario[0] + "</td>" +
-                                 "<td>" + horario[1] + "</td>" +
-                                 "<td>" + horario[2] + ":00" + "</td>" +
-                                 "<td>" + horario[4] + "</td>" + // Mostrar el nombre de la previsión
-                                 "<td>" + horario[3] + "</td>" + // Mostrar el costo
-                                 "<td><button onclick='reservarHorario(" + horario[2] + ")'>Reservar</button></td>";
-            });
+                        horarios.forEach(horario => {
+                            var fila = tabla.insertRow();
+                            fila.innerHTML = "<td>" + horario[0] + "</td>" +
+                                             "<td>" + horario[1] + "</td>" +
+                                             "<td>" + horario[2] + ":00" + "</td>" +
+                                             "<td>" + horario[4] + "</td>" + // Mostrar el nombre de la previsión
+                                             "<td>" + horario[3] + "</td>" + // Mostrar el costo
+                                             "<td><button onclick='reservarHorario(" + horario[2] + ")'>Reservar</button></td>";
+                        });
 
-            horariosDiv.appendChild(tabla);
-        } else {
-            horariosDiv.innerHTML = "<p>No se encontraron horarios disponibles.</p>";
+                        horariosDiv.appendChild(tabla);
+                    } else {
+                        horariosDiv.innerHTML = "<p>No se encontraron horarios disponibles.</p>";
+                    }
+                })
+                .catch(error => console.error('Error al obtener los horarios:', error));
         }
-    })
-    .catch(error => console.error('Error al obtener los horarios:', error));
-    }
     </script>
 </body>
 </html>

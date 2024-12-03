@@ -195,7 +195,40 @@ def eliminar_horario(id):
 
 @app.route('/administrativo/configuraciones')
 def configuraciones():
-    return
+    return render_template('configuraciones.html')
+
+@app.route('/cambiar_contraseña_admin', methods=['POST'])
+def cambiar_contraseña_admin():
+    nueva_contraseña = request.form.get('nueva_contraseña')
+    if not nueva_contraseña:
+        flash('La nueva contraseña no puede estar vacía', 'danger')
+        return redirect(url_for('configuraciones'))
+
+    try:
+        DB_functions.cambiar_contraseña_admin(nueva_contraseña)
+        flash('Contraseña cambiada exitosamente', 'success')
+    except Exception as ex:
+        print(ex)
+        flash('Error al cambiar la contraseña', 'danger')
+
+    return redirect(url_for('configuraciones'))
+
+@app.route('/cambiar_fechas', methods=['POST'])
+def cambiar_fechas():
+    fecha_inicial = request.form.get('fecha_inicial')
+    fecha_final = request.form.get('fecha_final')
+    if not fecha_inicial or not fecha_final:
+        flash('Las fechas no pueden estar vacías', 'danger')
+        return redirect(url_for('configuraciones'))
+
+    try:
+        DB_functions.cambiar_fechas(fecha_inicial, fecha_final)
+        flash('Fechas modificadas exitosamente', 'success')
+    except Exception as ex:
+        print(ex)
+        flash('Error al modificar las fechas', 'danger')
+
+    return redirect(url_for('configuraciones'))
 
 @app.route('/buscar_especialistas')
 def buscar_especialistas():
@@ -212,7 +245,7 @@ def seleccionar_especialista():
 def agendar_hora(rutE):
     rutP = session.get('rut_paciente')
     intervalo = DB_functions.obtener_periodo_temporal()
-    horarios = DB_functions.obtener_horarios_disponibles("", intervalo[0]['fecha_inicio'], intervalo[0]['fecha_final'],"", rutE)
+    horarios = DB_functions.obtener_horarios_disponibles("", intervalo['fecha_inicio'], intervalo['fecha_final'],"", rutE)
     especialista = DB_functions.buscar_doctor(rutE)
     previsiones = DB_functions.obtener_previsiones_especialista(rutE)
     print(previsiones)
